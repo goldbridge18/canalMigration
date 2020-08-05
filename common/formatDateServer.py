@@ -14,3 +14,4 @@ def formatDate(timeStamp):
         formatAfterTime = time.strftime("%Y-%m-%d %H:%M:%S", formatLocal)
 
     return formatAfterTime
+

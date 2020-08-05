@@ -1,7 +1,7 @@
 import datetime
 
-from handleJson import jsonToList
-from mysqlConn import execCmd
+from handleserivce.handleJson import jsonToList
+from dbconn.mysqlConn import execCmd
 
 def getMUTLResultOrJson(updateDic ,filedName ="" , jsonType = "json",num = 1):
     '''

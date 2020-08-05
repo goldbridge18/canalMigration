@@ -4,7 +4,7 @@ import urllib.request
 import datetime
 
 
-from parseConfig import *
+from common.parseConfig import *
 # mysql 执行sql语句
 
 

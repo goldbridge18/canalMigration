@@ -1,7 +1,7 @@
 #ods_eeo_class_member_in_out
 
-from multHandle import getMUTLResultOrJson,multisql
-from parseConfig import *
+from handleserivce.multHandle import getMUTLResultOrJson,multisql
+from common.parseConfig import *
 class tableStruncte(object):
 
     eeo_class_member_time_header = "insert into {hadTableName}(`id`,`school_uid`,`course_id`,`class_id`,`member_uid`,`member_account`,`member_nickname`," \

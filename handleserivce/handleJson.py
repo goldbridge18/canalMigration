@@ -6,8 +6,8 @@ import phpserialize
 
 from collections import abc
 from common.common import nestedDictIter,getBinlogValues
-from compareUpdateData import setUpdatedFieldValue
-
+from handleserivce.compareUpdateData import setUpdatedFieldValue
+from common.loggerout import writeLogContext
 
 # 处理field josn格式的字符串，反序列化，返回list数据
 def jsonToList(jsonStr, fieldName="", jsonType="json"):
@@ -31,6 +31,7 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
         try:
             jsonToDict = json.loads(reStr.replace("None","0"))
         except Exception as e:
+            
             with open("./logs/parse_jsonerr.txt","a+") as f:
                 f.write("\n")
                 f.write(reStr)

@@ -1,7 +1,10 @@
 import logging
 import os
 
-def writeLogContext(context,modlename,logfilepath):
+basePath = os.path.dirname(os.path.dirname(__file__))
+logfilepath = "{path}/logs/info.log".format(path = basePath)
+print(logfilepath)
+def writeLogContext(context,modlename):
 
     #创建logger记录器
     logger = logging.getLogger(modlename)
@@ -24,9 +27,9 @@ def writeLogContext(context,modlename,logfilepath):
     logger.debug(context)
 
 
-''' 
-log = 'debug.共产党'
-path = ''
-modlename = ''
-writeLogContext(log,os.path.basename(__file__),'debug.log')
- '''
+
+# log = 'debug.共产党'
+
+# modlename = 'info'
+# writeLogContext(log,modlename)
+ 

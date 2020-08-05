@@ -1,9 +1,9 @@
 [canalInfo]
 
-host=10.0.0.64
+host=127.0.0.1
 port=11111
 client_id=1001
-destination=test
+destination=example
 batchSize=1000
 
 [databaseInfo]

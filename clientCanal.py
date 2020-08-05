@@ -5,12 +5,12 @@ from canal.client import Client
 from canal.protocol import EntryProtocol_pb2
 from canal.protocol import CanalProtocol_pb2
 
-from handleJson import *
-from compareUpdateData import *
-from mysqlConn import *
-from tablestructe import *
-from tablestructe import tableStruncte
-from formatDateServer import formatDate
+from handleserivce.handleJson import *
+from handleserivce.compareUpdateData import *
+from dbconn.mysqlConn import *
+# from handleserivce.tablestructe import *
+from handleserivce.tablestructe import tableStruncte
+from common.formatDateServer import formatDate
 from common.common import findUpdatedFiled
 
 '''
@@ -108,7 +108,7 @@ while True:
 
             # --------------------数据处理-------------------------------------------
             # print(updated_fields)
-            # print(data)
+            print(data)
             data.setdefault("updated_fields",data["updated_fields"])
             #获取binlog的logfile，posistion、binlog的执行时间
             binlogInfo = dict()
