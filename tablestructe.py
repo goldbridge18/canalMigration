@@ -112,9 +112,8 @@ class tableStruncte(object):
             tempvalList = [id,school_uid,course_id,class_id,member_uid,member_account,member_nickname,is_late,is_on,is_early,identity,platform_type,stayin_time,add_time,client_class_id,json_in,json_platform_type,json_os_type,json_out ,json_exit_status,duration,operation_type,execute_time]
             totalList.append(tempvalList)
 
-        # print("totalList----ods_eeo_class_member_in_out---->",totalList)
         totalListToStr = str(totalList).replace("[[","(").replace("]]",")").replace("[","(").replace("]",")").replace(" ","")
-        # print("totalListToStr------->",totalListToStr)
+
         return  totalListToStr
 
 

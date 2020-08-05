@@ -28,8 +28,6 @@ def getMUTLResultOrJson(updateDic ,filedName ="" , jsonType = "json",num = 1):
             keyList.append(k)
             valuesList.append(v)
 
-
-
     elif num == 1:  # insert
         for k, v in updateDic["data"].items():
             if k == filedName:
@@ -39,8 +37,9 @@ def getMUTLResultOrJson(updateDic ,filedName ="" , jsonType = "json",num = 1):
                 valuesList.append(v.replace("\"","").replace("\'",""))
     else:
         pass
-
+    # print(jsontoList)
     jsontoListLen = len(jsontoList)
+    # print(jsontoListLen)
     listIndictList = []
     if len(jsontoList) != 0:
         tmpkeyList = keyList + jsontoList[0]
@@ -71,6 +70,6 @@ def multisql(val,header,count,size, flag):
        sql1 = header + str(val).replace("[\"","").replace("\"]","").replace("\"","")
        print("----------",datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
        print("--------------------------插入数据----------------------------")
-       execCmd(sql1)
-       print("--------------------------插入完成----------------------------")
+       # execCmd(sql1)
        print(sql1)
+       print("--------------------------插入完成----------------------------")

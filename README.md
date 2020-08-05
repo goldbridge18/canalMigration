@@ -1,0 +1,1 @@
+git remote add  canalMigration https://github.com/goldbridge18/canalMigration.git

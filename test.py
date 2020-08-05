@@ -85,7 +85,7 @@ def jsonToList(jsonStr, fieldName,jsonType = "json"):
 # str05 = 'a:4:{s:2:"in";a:9:{i:0;s:10:"1508498691";i:1;s:10:"1508550732";i:2;s:10:"1508550942";i:3;s:10:"1508575529";i:4;s:10:"1508575841";i:5;s:10:"1508576175";i:6;s:10:"1508579091";i:7;s:10:"1508579643";i:8;s:10:"1508580915";}s:3:"out";a:9:{i:0;s:10:"1508499381";i:1;s:10:"1508550942";i:2;s:10:"1508551080";i:3;s:10:"1508575642";i:4;s:10:"1508575855";i:5;s:10:"1508576197";i:6;s:10:"1508579313";i:7;s:10:"1508580897";i:8;s:10:"1508581243";}s:11:"exit_status";a:9:{i:0;s:1:"3";i:1;s:1:"1";i:2;s:1:"3";i:3;s:1:"3";i:4;s:1:"1";i:5;s:1:"1";i:6;s:1:"1";i:7;s:1:"1";i:8;s:1:"1";}s:13:"platform_type";a:6:{i:0;N;i:1;N;i:2;N;i:3;N;i:4;N;i:5;N;}}'
 # print(jsonToList(str05,11,"phpjson"))
 
-str06 = {'id': False, 'school_uid': True, 'course_id': False, 'class_id': False, 'member_uid': False, 'member_account': False, 'member_nickname': False, 'time_list': False, 'is_late': False, 'is_on': False, 'is_early': False, 'identity': False, 'platform_type': True, 'stayin_time': False, 'add_time': False, 'client_class_id': False}
+str06 = {'id': False, 'school_uid': True, 'course_id': False, 'class_id': False, 'member_uid': False, 'member_account': False, 'member_nickname': False, 'time_list': True, 'is_late': False, 'is_on': False, 'is_early': False, 'identity': False, 'platform_type': True, 'stayin_time': False, 'add_time': False, 'client_class_id': False}
 # before = {'id': '376965019', 'school_uid': '16015646', 'course_id': '57777211', 'class_id': '176707654', 'member_uid': '17443330', 'member_account': '13818702080', 'member_nickname': '赵羿然Leo', 'time_list': 'a:5:{s:2:"in";a:2:{i:0;s:10:"1589941181";i:1;s:10:"1589942374";}s:13:"platform_type";a:2:{i:0;i:302;i:1;i:302;}s:7:"os_type";a:2:{i:0;i:4;i:1;i:4;}s:3:"out";a:1:{i:0;s:10:"1589942369";}s:11:"exit_status";a:1:{i:0;s:2:"56";}}', 'is_late': '0', 'is_on': '1', 'is_early': '1', 'identity': '1', 'platform_type': '331', 'stayin_time': '0', 'add_time': '1589941182', 'client_class_id': '176707654'}
 # before = 'a:5:{s:2:"in";a:2:{i:0;s:10:"1589941181";}s:13:"platform_type";a:2:{i:0;i:302;}s:7:"os_type";a:2:{i:0;i:4;}s:3:"out";a:1:{i:0;s:10:"1589942369";}s:11:"exit_status";a:1:{i:0;s:2:"56";}}'
 before = 'a:4:{s:2:"in";a:1:{i:0;s:10:"1589608695";}s:13:"platform_type";a:1:{i:0;i:303;}s:7:"os_type";a:1:{i:0;i:7;}s:3:"out";a:1:{i:0;s:10:"1589608702";}}'
@@ -122,7 +122,7 @@ from common.common import findUpdatedFiled
 print(findUpdatedFiled(str06))
 
 
-from comparePhpJson import getListDefferSet
+from compareUpdateData import getListDefferSet
 
 def getJsonKeyupdateDetails(before,after):
     '''
@@ -192,10 +192,12 @@ print(getJsonKeyupdateDetails(before,after)) #更新内容
 def getAllFieldName(data=0,updated_data=0):
     jsontoList = getListDefferSet(before,
                                   after)[0]
-    print(findUpdatedFiled(str06)+jsontoList)
-    print()
+    print("-----------start------------")
+    print(findUpdatedFiled(str06,"time_list")+jsontoList)
+    print("-------------end----------")
 
-getAllFieldName()
+# getAllFieldName()
+
 def updateOrJsonSql(updateDic, filedName, num):
     '''
     only jsonType="phpjson"
@@ -303,13 +305,15 @@ list_dict = '{"src":"/upload/homework/images/20190426/8b0c59aca9eefc5d4749.jpg",
 import emoji
 
 
+# str10 = {'db': 'test', 'table': 'eeo_class_member_time', 'event_type': 2, 'data': {'before': {'id': '362091194', 'school_uid': '21908074', 'course_id': '72909960', 'class_id': '176712456', 'member_uid': '22007464', 'member_account': '15531306296', 'member_nickname': '石蕊', 'time_list': 'a:5:{s:2:"in";a:1:{i:0;s:10:"1589941181";}s:13:"platform_type";a:1:{i:0;i:302;}s:7:"os_type";a:1:{i:0;i:4;}s:3:"out";a:1:{i:0;s:10:"1589942369";}s:11:"exit_status";a:1:{i:0;s:2:"56";}}', 'is_late': '0', 'is_on': '1', 'is_early': '0', 'identity': '1', 'platform_type': '303', 'stayin_time': '0', 'add_time': '1589942375', 'client_class_id': '176712456'}, 'after': {'id': '362091194', 'school_uid': '21908074', 'course_id': '72909960', 'class_id': '176712456', 'member_uid': '22007464', 'member_account': '15531306296', 'member_nickname': '石蕊', 'time_list': 'a:5:{s:2:"in";a:2:{i:0;s:10:"1589941181";i:1;s:10:"1589942374";}s:13:"platform_type";a:2:{i:0;i:302;i:1;i:302;}s:7:"os_type";a:2:{i:0;i:4;i:1;i:4;}s:3:"out";a:1:{i:0;s:10:"1589942369";}s:11:"exit_status";a:1:{i:0;s:2:"56";}}', 'is_late': '0', 'is_on': '2', 'is_early': '0', 'identity': '1', 'platform_type': '3020', 'stayin_time': '0', 'add_time': '1589942375', 'client_class_id': '176712456'}}, 'updated_fields': {'id': False, 'school_uid': False, 'course_id': False, 'class_id': False, 'member_uid': False, 'member_account': False, 'member_nickname': False, 'time_list': True, 'is_late': False, 'is_on': True, 'is_early': False, 'identity': False, 'platform_type': True, 'stayin_time': False, 'add_time': False, 'client_class_id': False}, 'execute_time': '2020-08-05 16:05:53'}
+
+str10 ={'db': 'test', 'table': 'eeo_class_member_time', 'event_type': 1, 'data': {'id': '362091193', 'school_uid': '19199750', 'course_id': '57930185', 'class_id': '164747194', 'member_uid': '19299006', 'member_account': '18810965029', 'member_nickname': '?打?打?打?打?打?打?打?打?打?打?打?打', 'time_list': 'a:5:{s:2:"in";a:4:{i:0;s:10:"1589268646";i:1;s:10:"1589268923";i:2;s:10:"1589272214";i:3;s:10:"1589272393";}s:13:"platform_type";a:4:{i:0;i:303;i:1;i:2;i:2;i:2;i:3;i:2;}s:7:"os_type";a:4:{i:0;i:7;i:1;i:3;i:2;i:3;i:3;i:3;}s:3:"out";a:4:{i:0;s:10:"1589268912";i:1;s:10:"1589272109";i:2;s:10:"1589272393";i:3;s:10:"1589273680";}s:11:"exit_status";a:4:{i:0;s:2:"53";i:1;s:1:"1";i:2;s:1:"6";i:3;s:1:"1";}}', 'is_late': '1', 'is_on': '0', 'is_early': '1', 'identity': '1', 'platform_type': '2', 'stayin_time': '0', 'add_time': '1589268647', 'client_class_id': '164747194'}, 'updated_fields': {}, 'execute_time': '2020-08-05 16:38:43'}
+
+from handleJson import handleInJsonToList,mergeAllFiledValue,getSql
+# handleInJsonToList(str10,"phpjson","time_list")
+
+# mergeAllFiledValue(str10,"phpjson","time_list")
 
 
-content = '\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974\\U0001f974'
-
-
-tmplist = ['time_list', 'platform_type', 'josn_in', 'josn_platform_type', 'josn_os_type', 'josn_out', 'josn_exit_status']
-
-ll = [index for index,val in enumerate(tmplist) if val == "platform_type"]
-
-print(ll)
+# hadtableName= "xxxxxxx"
+# getSql(str10, hadtableName,"phpjson","time_list")

@@ -16,7 +16,7 @@ jsonType=phpjson
 
 [dataInfo]
 
-rowNum = 1
+rowNum = 100
 #0 single 1batch
 isSqlBatch = 1
 

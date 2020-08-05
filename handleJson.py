@@ -5,42 +5,8 @@ import re, datetime, json
 import phpserialize
 
 from collections import abc
-from common.common import nestedDictIter
-
-
-# #  处理phpjson、json 循环嵌套--转换成dict
-# def jsonToDictToSql(jsonStr, tableName, jsonType="json"):
-#     '''
-#     :param jsonStr:
-#     :param tableName:
-#     :param jsonType: 默认json ； phpjson
-#     :return: 字典
-#     '''
-#     # 转字典
-#     if jsonType == "json":
-#         jsonToDict = json.loads(jsonStr)
-#         # jsonToDict = jsonStr
-#     elif jsonType == "phpjson":
-#         strToByte = bytes(jsonStr, encoding="utf8")
-#         byteToDict = phpserialize.loads(strToByte)
-#         jsonToDict = byteToDict
-#
-#     keyList = []
-#     valuesList = []
-#
-#     '''
-#     调用nested_dict_iter函数 yield
-#     读取嵌套字典的数据
-#     '''
-#     for i in nestedDictIter(jsonToDict):
-#         keyname = "_".join(i[:-1])
-#         valuename = "{value}".format(value=i[-1])
-#
-#         keyList.append(keyname)
-#         valuesList.append(valuename)
-#
-#     dict_data = dict(zip(keyList, valuesList))
-#     return dict_data
+from common.common import nestedDictIter,getBinlogValues
+from compareUpdateData import setUpdatedFieldValue
 
 
 # 处理field josn格式的字符串，反序列化，返回list数据
@@ -52,7 +18,7 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
     :return: list index:0 keyname index:1-n values
     '''
     # 转字典
-    # print("---------------->:",jsonStr)
+    # print("---------转字典------->:",jsonStr)
     if jsonType == "json":
         jsonToDict = json.loads(jsonStr)
         # jsonToDict = jsonStr
@@ -102,45 +68,11 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
         else:
             totalList.append(valuesList)
     except Exception as e:
-        # print("---------------->",jsonStr)
+        print("---------------->",e)
         with open("./logs/error_json.txt","a+") as f:
             f.write("\n")
-            f.write(jsonStr)
+            f.write("{a} : {b}".format(a =e ,b=jsonStr))
         return []
-    return totalList
-
-def getBinlogValues(updateDic):
-    '''
-    获取binlog的数据信息
-    :param updateDic:
-    :return: 两个元素的list类型数据 index:0 是key 的列表 ，index：1是value的列表
-    '''
-    keyList = []
-    valueList = []
-
-    keyList.append("operation_type")
-    valueList.append(updateDic["event_type"])
-
-    keyList.append("execute_time")
-    valueList.append(updateDic["execute_time"])
-
-    if updateDic["event_type"] == 2:  # 更新
-        for k, v in updateDic["data"]["after"].items():
-            keyList.append(k)
-            valueList.append(v)
-
-    elif updateDic["event_type"] == 1 or updateDic["event_type"] == 3:  # insert
-        for k, v in updateDic["data"].items():
-            keyList.append(k)
-            valueList.append(v)
-
-    else:
-        pass
-
-    totalList = []  #index:0 是key 的列表 ，index：1是value的列表
-    totalList.append(keyList)
-    totalList.append(valueList)
-    print("getBinlogValues--->",totalList)
     return totalList
 
 
@@ -160,11 +92,117 @@ def updateAndInsertSql(updateDic,tableName):
     valuesSqlList = str(valuesList).replace('[', '(').replace(']', ')')
 
     SQL = "insert into " + tableName + " " + filedsSqlList + " values " + valuesSqlList + ";"
-    print("function：updateAndInsertSql---> ",SQL)
+    # print("function：updateAndInsertSql---> ",SQL)
     return SQL
 
 
+def handleJsonData():
+    pass
+
+def handleInJsonToList(updateDic, jsonType = "",filedName = ""):
+    '''
+    合并反序列化之后的和字段的合并
+    :param updateDic:
+    :param jsonType:
+    :param filedName:
+    :return:  返回一个数组 index=0是fileds index=1 是values,values是一个list  例如：返回值 [[..],[[..],[..]]]
+    '''
+    parseJsonList = []
+    valList = []
+    totalList = []
+    filedsAndValueList = getBinlogValues(updateDic,filedName)# 获取binlog中的所有值，返回一个数组 index=0是fileds index=1 是values
+
+    if filedName != "" and updateDic["event_type"] == 2:  # insert
+
+        parseJsonList = jsonToList(updateDic["data"]["after"][filedName], filedName, jsonType=jsonType)
+
+    elif filedName != "" and (updateDic["event_type"] == 1 or updateDic["event_type"] == 3):
+        parseJsonList = jsonToList(updateDic["data"][filedName], filedName, jsonType=jsonType)
+
+
+    if len(parseJsonList) != 0:
+        keyList = filedsAndValueList[0] + parseJsonList[0]
+        for i in range(len(parseJsonList) - 1):
+
+            valList.append(filedsAndValueList[1] + parseJsonList[i + 1])
+
+        totalList.append(keyList)
+        totalList.append(valList)
+
+    else:
+        totalList.append(filedsAndValueList[0])
+        tmpList = []
+        tmpList.append(filedsAndValueList[1])
+        totalList.append(tmpList)
+
+    return totalList
+
+def mergeAllFiledValue(updateDic, jsonType="", filedName=""):
+    '''
+    把updated 的字段及值合并到数据List中
+    :param updateDic:
+    :param jsonType:
+    :param filedName:
+    :return:
+    '''
+
+    totalList = []
+    valueList = []
+    filedList = []
+
+    if updateDic["event_type"] == 2:
+
+        updatedList = setUpdatedFieldValue(updateDic, filedName) #获取key为true的值
+
+        if filedName == "":
+           filedList =  getBinlogValues(updateDic,filedName)[0] + updatedList[0]
+           valueList =  getBinlogValues(updateDic,filedName)[1] + updatedList[1]
+
+           totalList.append(filedList)
+           totalList.append(valueList)
+        else:
+            filedList = handleInJsonToList(updateDic, jsonType, filedName)[0] + getBinlogValues(updateDic,filedName)[0] + updatedList[0]
+            # print("--------111---",handleInJsonToList(updateDic, jsonType, filedName))
+            # print("--------111---",handleInJsonToList(updateDic, jsonType, filedName)[1])
+
+            for i in  handleInJsonToList(updateDic, jsonType, filedName)[1]:
+
+                valueList.append(getBinlogValues(updateDic,filedName)[1] + updatedList[1])
+            totalList.append(filedList)
+            totalList.append(valueList)
+    else:
+
+        totalList = handleInJsonToList(updateDic, jsonType,filedName )
+
+    return totalList
+
+
+def getSql(updateDic, tableName,jsonType="", filedName=""):
+    '''
+
+    :param updateDic:
+    :param tableName:
+    :param jsonType:
+    :param filedName:
+    :return:  list
+    '''
+    sqlList = []
+    tmpList = mergeAllFiledValue(updateDic, jsonType, filedName)
+    # print("++++++++++++++",tmpList)
+    filedList = tmpList[0]
+    valueList = tmpList[1]
+
+    fields = str(filedList).replace("[", "(").replace("]", ")").replace("'", "`")
+    values = str(valueList).replace("[[", "(").replace("]]", ")").replace("[", "(").replace("]", ")")
+    sql = "insert into " + tableName +fields + " values" + values
+
+    sqlList.append(sql)
+    return sqlList
+
+
+
 def includeJsonSql(updateDic,hapTableName ,filedName, jsonType,num):
+
     '''
     反序列化 json phpjson 后，生成insert语句
     :param updateDic:
@@ -206,22 +244,17 @@ def includeJsonSql(updateDic,hapTableName ,filedName, jsonType,num):
         pass
 
     jsontoListLen = len(jsontoList)
-
     if len(jsontoList) != 0:
         tmpkeyList = keyList + jsontoList[0]
-        # print("tmpfiledsSqlList------>: ",tmpkeyList)
         filedsSqlList = str(tmpkeyList).replace('[', '(').replace(']', ')').replace('\'', '')
 
         for i in range(jsontoListLen - 1):
             tempvaluesSqlList = valuesList
             tempvaluesSqlList = tempvaluesSqlList + jsontoList[i + 1]
             valuesSqlList = str(tempvaluesSqlList).replace('[', '(').replace(']', ')')
-            #
 
             SQL = "insert into " + hapTableName + " " + filedsSqlList + " values " + valuesSqlList + ";"
             sqlList.append(SQL)
-
-
     else:
         SQL = "insert into " + hapTableName + " " + filedsSqlList + " values " + valuesSqlList + ";"
         sqlList.append(SQL)
