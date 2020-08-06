@@ -23,7 +23,7 @@ def jsonToDict(jsonStr, jsonType="json"):
             tmpJsonToDict = json.loads(reStr)
 
             for k, v in tmpJsonToDict.items():
-                jsonToDict["josn_" + k] = v
+                jsonToDict["json_" + k] = v
 
         except ValueError as e:
             print("反序列的值有问题")

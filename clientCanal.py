@@ -172,8 +172,8 @@ while True:
                     if fieldName in findUpdatedFiled(data["updated_fields"]) or len(jsonType) > 0:
 
                         print("---------------update--json---------------------")
-                        res = getSql(data, hadTableName, jsonType, fieldName)
-                        print("res----1>:",res)
+                        # res = getSql(data, hadTableName, jsonType, fieldName)
+                        # print("res----1>:",res)
                         res = parseUpdateJsonToSql(data, fieldName,hadTableName)
                         print("res----2>:",res)
 
