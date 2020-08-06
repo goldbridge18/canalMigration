@@ -46,6 +46,8 @@ def jsonToList01(jsonStr, fieldName,jsonType = "json"):
     调用nested_dict_iter函数 yield
     读取嵌套字典的数据
     '''
+    print(keyList)
+    print(valuesList)
     for i in nestedDictIter(jsonToDict):
         keyname = "".join(i[:-1])
         if jsonType == "json":
@@ -84,6 +86,12 @@ str112 = 'a:3:{s:3:"out";a:2:{i:0;s:10:"1474376929";i:1;s:10:"1474377337";}s:11:
 
 str05 = 'a:3:{s:2:"in";a:2:{i:0;s:10:"1501134167";i:1;s:10:"1501140558";}s:3:"out";a:1:{i:0;s:10:"1501141533";}s:11:"exit_status";a:1:{i:0;s:1:"1";}}'
 
+# from handleserivce.handleJson import jsonToList
 from handleserivce.handleJson import jsonToList
-# print("------>",jsonToList(str05,11,"phpjson"))
-print("------>",jsonToList01(str05,11,"phpjson"))
+print("------>",jsonToList(str05,11,"phpjson"))
+# print("------>",jsonToList01(str05,11,"phpjson"))
+
+key =  ['json_in', 'json_out', 'json_exit_status']
+value  =  [['1501134167', '1501140558'], ['1501141533'], ['1']]
+
+

@@ -64,7 +64,10 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
             for i in range(valListElementLen):
                 tmpList = []
                 for j in range(valListLen):
-                    tmpList.append(valuesList[j][i])
+                    try:
+                        tmpList.append(valuesList[j][i])
+                    except Exception as e:
+                        tmpList.append(valuesList[j][-1])
 
                 totalList.append(tmpList)
         else:
@@ -76,6 +79,7 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
             f.write("\n")
             f.write("{a} : {b}".format(a =e ,b=jsonStr))
         return []
+    print("----totalList------>",totalList)
     return totalList
 
 
