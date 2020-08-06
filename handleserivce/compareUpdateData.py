@@ -4,6 +4,7 @@ from collections import abc
 import json,os,sys
 
 from common.common import findUpdatedFiled
+from common.loggerout import writeLogContext
 
 def jsonToDict(jsonStr, jsonType="json"):
     jsonToDict = dict()
@@ -31,9 +32,6 @@ def jsonToDict(jsonStr, jsonType="json"):
     return jsonToDict
 
 
-# print(jsonToDict(str02))
-
-
 def getListDefferSet(before, after):
     '''
 
@@ -49,7 +47,6 @@ def getListDefferSet(before, after):
     #
     if beforeDict == 0  or afterDict == 0 or before == after:
         # add log put out
-
         return []
     # 对比before 和after的 字典值，并取得list的值得交集
     for k, v in beforeDict.items():
@@ -80,7 +77,7 @@ def getListDefferSet(before, after):
 
     totalList.append(fieldsList)
     totalList.append(valList)
-    # print(os.path.basename(__file__),"--------->:",totalList)
+    print(os.path.basename(__file__),"--------->:",totalList)
     return totalList
 
 
@@ -132,7 +129,6 @@ def parseUpdateJsonToSql(updateDic,filedName,hadTableName):
             #
             # print("valuesSqlList001------>:",valuesSqlList)
             # print("filedsSqlList001------>:",filedsSqlList)
-            #
             SQL = "insert into " + hadTableName + " " + filedsSqlList + " values " + valuesSqlList + ";"
             sqlList.append(SQL)
 
@@ -155,7 +151,7 @@ def setUpdatedFieldValue(updateDic,filedName=''):
     :return: 值为list index 0位key index 1位value
     '''
     totalList = []
-    print("-setUpdatedFieldValue--------",updateDic)
+    # print("-setUpdatedFieldValue--------",updateDic)
     if filedName != '' and updateDic["event_type"] == 2:
         jsontoList = getListDefferSet(updateDic["data"]["before"][filedName],
                                   updateDic["data"]["after"][filedName])[0]

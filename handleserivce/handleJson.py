@@ -31,7 +31,6 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
         try:
             jsonToDict = json.loads(reStr.replace("None","0"))
         except Exception as e:
-            
             with open("./logs/parse_jsonerr.txt","a+") as f:
                 f.write("\n")
                 f.write(reStr)
@@ -57,6 +56,9 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
     totalList.append(keyList)
     valListLen = len(valuesList)
     valListElementLen = len(valuesList[0])
+    #
+    print("key ",keyList)
+    print("value ",valuesList)
     try:
         if jsonType == "phpjson":
             for i in range(valListElementLen):
@@ -65,11 +67,11 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
                     tmpList.append(valuesList[j][i])
 
                 totalList.append(tmpList)
-            # print(totalList)
         else:
             totalList.append(valuesList)
     except Exception as e:
         print("---------------->",e)
+        writeLogContext(e,"info")
         with open("./logs/error_json.txt","a+") as f:
             f.write("\n")
             f.write("{a} : {b}".format(a =e ,b=jsonStr))
@@ -164,8 +166,6 @@ def mergeAllFiledValue(updateDic, jsonType="", filedName=""):
         else:
             filedList = handleInJsonToList(updateDic, jsonType, filedName)[0] + getBinlogValues(updateDic,filedName)[0] + updatedList[0]
             # print("--------111---",handleInJsonToList(updateDic, jsonType, filedName))
-            # print("--------111---",handleInJsonToList(updateDic, jsonType, filedName)[1])
-
             for i in  handleInJsonToList(updateDic, jsonType, filedName)[1]:
 
                 valueList.append(getBinlogValues(updateDic,filedName)[1] + updatedList[1])

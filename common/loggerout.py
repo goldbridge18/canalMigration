@@ -1,8 +1,9 @@
 import logging
-import os
+import os,datetime
 
+curDate =  datetime.datetime.now().strftime("%Y-%m-%d")
 basePath = os.path.dirname(os.path.dirname(__file__))
-logfilepath = "{path}/logs/info.log".format(path = basePath)
+logfilepath = "{path}/logs/info_{date}.log".format(path = basePath,date = curDate)
 print(logfilepath)
 def writeLogContext(context,modlename):
 
@@ -17,7 +18,7 @@ def writeLogContext(context,modlename):
     sh = logging.StreamHandler()
     sh.setLevel(logging.DEBUG)
     '''
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     #sh.setFormatter(formatter)
 

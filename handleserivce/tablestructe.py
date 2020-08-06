@@ -63,39 +63,39 @@ class tableStruncte(object):
             try:
                 platform_type = valDict["platform_type"]
             except KeyError as e:
-                platform_type = "0"
+                platform_type = 0
             try:
                 stayin_time = valDict["stayin_time"]
             except KeyError as e:
-                stayin_time = "0"
+                stayin_time = 0
             try:
                 add_time = valDict["add_time"]
             except KeyError as e:
-                add_time = "0"
+                add_time = 0
             try:
                 client_class_id = valDict["client_class_id"]
             except KeyError as e:
-                client_class_id = "0"
+                client_class_id = 0
             try:
                 json_in = valDict["json_in"]
             except KeyError as e:
-                json_in = "0"
+                json_in = 0
             try:
                 json_platform_type = valDict["json_platform_type"]
             except KeyError as e:
-                json_platform_type = "0"
+                json_platform_type = 0
             try:
                 json_os_type = valDict["json_os_type"]
             except KeyError as e:
-                json_os_type = "0"
+                json_os_type = 0
             try:
                 json_out = valDict["json_out"]
             except KeyError as e:
-                json_out = "0"
+                json_out = 0
             try:
                 json_exit_status = valDict["json_exit_status"]
             except KeyError as e:
-                json_exit_status = "0"
+                json_exit_status = 0
             try:
                 duration = valDict["duration"]
             except KeyError as e:

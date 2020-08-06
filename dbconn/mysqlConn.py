@@ -5,6 +5,7 @@ import datetime
 
 
 from common.parseConfig import *
+from common.loggerout import writeLogContext
 # mysql 执行sql语句
 
 
@@ -23,16 +24,21 @@ def execCmd(query):
     conn = pymysql.connect(host= ipaddr, user= userName, password = password, database = targetDatabaseName, port = port)
     try:
         cursor = conn.cursor()
-        cursor.execute(query)
+        if isinstance(query,list):
+            for sql in query:
+                cursor.execute(sql)
+        else:
+            cursor.execute(query)
         conn.commit()
         cursor.close()
-        conn.close()
     except Exception as e:
         conn.rollback()
-        with open("./logs/err_sql.log", "a+", encoding="utf8") as f:
-            f.write("\n")
-            f.write("{date}-->{i}: ".format(date = dateCur,i = query))
-
+        writeLogContext(e,"info")
+        writeLogContext(query,"info")
+        # with open("../logs/err_sql.log", "a+", encoding="utf8") as f:
+        #     f.write("\n")
+        #     f.write("{date}-->{i}: ".format(date = dateCur,i = query))
+    conn.close()
 #多线程执行.(出现重复插入的情况，待解决)
 def concurExecSql(strList):
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:

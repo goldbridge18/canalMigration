@@ -122,7 +122,7 @@ from common.common import findUpdatedFiled
 print(findUpdatedFiled(str06))
 
 
-from compareUpdateData import getListDefferSet
+from handleserivce.compareUpdateData import getListDefferSet
 
 def getJsonKeyupdateDetails(before,after):
     '''
@@ -309,11 +309,10 @@ import emoji
 
 str10 ={'db': 'test', 'table': 'eeo_class_member_time', 'event_type': 1, 'data': {'id': '362091193', 'school_uid': '19199750', 'course_id': '57930185', 'class_id': '164747194', 'member_uid': '19299006', 'member_account': '18810965029', 'member_nickname': '?打?打?打?打?打?打?打?打?打?打?打?打', 'time_list': 'a:5:{s:2:"in";a:4:{i:0;s:10:"1589268646";i:1;s:10:"1589268923";i:2;s:10:"1589272214";i:3;s:10:"1589272393";}s:13:"platform_type";a:4:{i:0;i:303;i:1;i:2;i:2;i:2;i:3;i:2;}s:7:"os_type";a:4:{i:0;i:7;i:1;i:3;i:2;i:3;i:3;i:3;}s:3:"out";a:4:{i:0;s:10:"1589268912";i:1;s:10:"1589272109";i:2;s:10:"1589272393";i:3;s:10:"1589273680";}s:11:"exit_status";a:4:{i:0;s:2:"53";i:1;s:1:"1";i:2;s:1:"6";i:3;s:1:"1";}}', 'is_late': '1', 'is_on': '0', 'is_early': '1', 'identity': '1', 'platform_type': '2', 'stayin_time': '0', 'add_time': '1589268647', 'client_class_id': '164747194'}, 'updated_fields': {}, 'execute_time': '2020-08-05 16:38:43'}
 
-from handleJson import handleInJsonToList,mergeAllFiledValue,getSql
-# handleInJsonToList(str10,"phpjson","time_list")
 
-# mergeAllFiledValue(str10,"phpjson","time_list")
+str11 = '{"in":["1589941181","1589942374"],"platform_type":[302,302],"os_type":[4,4],"out":["1589942369"],"exit_status":["56"]}'
 
 
-# hadtableName= "xxxxxxx"
-# getSql(str10, hadtableName,"phpjson","time_list")
+# jsonToDict = json.loads(str11.replace("None","0"))
+jsonToDict = json.loads(str11.replace("None","0"))
+print("+++++++", jsonToDict)

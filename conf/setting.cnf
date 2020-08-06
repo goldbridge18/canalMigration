@@ -1,9 +1,9 @@
 [canalInfo]
 
-host=127.0.0.1
+host=10.0.0.64
 port=11111
 client_id=1001
-destination=example
+destination=test
 batchSize=1000
 
 [databaseInfo]
@@ -11,12 +11,12 @@ batchSize=1000
 databaseName=test
 tableName=eeo_class_member_time
 fieldName=time_list
-hadTableName=hdp_eeo_class_member_time
+hadTableName=hdp_class_member_time
 jsonType=phpjson
 
 [dataInfo]
 
-rowNum = 100
+rowNum = 3
 #0 single 1batch
 isSqlBatch = 1
 

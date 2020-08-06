@@ -8,8 +8,8 @@ from canal.protocol import CanalProtocol_pb2
 from handleserivce.handleJson import *
 from handleserivce.compareUpdateData import *
 from dbconn.mysqlConn import *
-# from handleserivce.tablestructe import *
-from handleserivce.tablestructe import tableStruncte
+from handleserivce.multHandle import multisql
+from handleserivce.tablestructe import tableStruncte,getMUTLResultOrJson
 from common.formatDateServer import formatDate
 from common.common import findUpdatedFiled
 
@@ -108,7 +108,7 @@ while True:
 
             # --------------------数据处理-------------------------------------------
             # print(updated_fields)
-            print(data)
+            # print(data)
             data.setdefault("updated_fields",data["updated_fields"])
             #获取binlog的logfile，posistion、binlog的执行时间
             binlogInfo = dict()
@@ -117,7 +117,8 @@ while True:
             binlogInfo.setdefault("execute_time",formatDate(header.executeTime))
             binlogInfo.setdefault("operation_type",header.eventType)
 
-            data.setdefault("execute_time",formatDate(header.executeTime))
+            # data.setdefault("execute_time",formatDate(header.executeTime))
+            data.setdefault("execute_time",round(header.executeTime/1000))
             # print(data)
             if data['db'] == databaseName and data['table'] == tableName:
                 # 获取sql
@@ -155,8 +156,6 @@ while True:
                             print("---------------insert--json---------------------")
                             res = getSql(data, hadTableName, jsonType, fieldName)
                             print(res)
-                            print("--------------------------------------")
-
                             # res = includeJsonSql(data,hadTableName,fieldName,jsonType, 1)
                             # print("-----------start---------------")
                             # res = getSql(data, hadTableName, jsonType, fieldName)
@@ -172,13 +171,11 @@ while True:
 
                     if fieldName in findUpdatedFiled(data["updated_fields"]) or len(jsonType) > 0:
 
-                        print("---------------insert--json---------------------")
+                        print("---------------update--json---------------------")
                         res = getSql(data, hadTableName, jsonType, fieldName)
-                        print(res)
-                        print("--------------------------------------")
-
+                        print("res----1>:",res)
                         res = parseUpdateJsonToSql(data, fieldName,hadTableName)
-                        print("res---->:",res)
+                        print("res----2>:",res)
 
                     else:
                         # res = includeJsonSql(data, fieldName, 2)
@@ -189,20 +186,17 @@ while True:
 
                     if len(jsonType) == 0:
 
-                        print("--------------delete-----------------------")
+                        print("--------------delete----1-------------------")
                         res = getSql(data, hadTableName, jsonType, fieldName)
                         print(res)
-                        print("--------------------------------------")
-
                         # res = updateAndInsertSql(data, hadTableName)
                         # print("insert :", res)
                         # # execCmd(res)
-                    else:
 
-                        print("-------------------------------------")
+                    else:
+                        print("--------------delete----2-------------------")
                         res = getSql(data, hadTableName, jsonType, fieldName)
                         print(res)
-                        print("--------------------------------------")
 
                         # res = includeJsonSql(data, hadTableName, fieldName, jsonType, 1)
                         # print("-----------start---------------", res)
