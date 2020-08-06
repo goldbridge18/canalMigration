@@ -120,6 +120,7 @@ def handleInJsonToList(updateDic, jsonType = "",filedName = ""):
         parseJsonList = jsonToList(updateDic["data"]["after"][filedName], filedName, jsonType=jsonType)
 
     elif filedName != "" and (updateDic["event_type"] == 1 or updateDic["event_type"] == 3):
+
         parseJsonList = jsonToList(updateDic["data"][filedName], filedName, jsonType=jsonType)
 
 
