@@ -10,13 +10,13 @@ batchSize=1000
 
 databaseName=test
 tableName=eeo_class_member_time
-fieldName=time_list
-hadTableName=hdp_class_member_time
-jsonType=phpjson
+fieldName=
+hadTableName=hdp_eeo_class_and_student
+jsonType=
 
 [dataInfo]
 
-rowNum = 1
+rowNum = 10
 #0 single 1batch
 isSqlBatch = 1
 

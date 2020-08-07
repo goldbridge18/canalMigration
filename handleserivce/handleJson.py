@@ -8,6 +8,7 @@ from collections import abc
 from common.common import nestedDictIter,getBinlogValues
 from handleserivce.compareUpdateData import setUpdatedFieldValue
 from common.loggerout import writeLogContext
+from handleserivce.compareUpdateData import getListDefferSet
 
 # 处理field josn格式的字符串，反序列化，返回list数据
 def jsonToList(jsonStr, fieldName="", jsonType="json"):
@@ -19,12 +20,17 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
     '''
     # 转字典
     # print("---------转字典------->:",jsonStr)
+    # print("---------转字典------->:",jsonType)
     if jsonType == "json":
-        jsonToDict = json.loads(jsonStr)
+        try:
+            jsonStr = re.sub('\]$', "", re.sub('^\[?', "", jsonStr))
+            jsonToDict = json.loads(jsonStr)
+        except Exception as e:
+            print(e,"----",jsonStr)
         # jsonToDict = jsonStr
     elif jsonType == "phpjson":
-        phpseriTostr = str(phpserialize.loads(jsonStr.encode(), decode_strings=True))
 
+        phpseriTostr = str(phpserialize.loads(jsonStr.encode(), decode_strings=True))
         reStr = re.sub('(?<!^)}(?!$)', "]",
                        re.sub('(?<!^){(?!$)', "[", re.sub('[0-9]+:', '', re.sub('[0-9]+:', '', phpseriTostr)))).replace(
             "\'", "\"").replace(" ", "")
@@ -57,8 +63,8 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
     valListLen = len(valuesList)
     valListElementLen = len(valuesList[0])
     #
-    print("key ",keyList)
-    print("value ",valuesList)
+    # print("key ",keyList)
+    # print("value ",valuesList)
     try:
         if jsonType == "phpjson":
             for i in range(valListElementLen):
@@ -108,7 +114,7 @@ def handleJsonData():
 
 def handleInJsonToList(updateDic, jsonType = "",filedName = ""):
     '''
-    合并反序列化之后的和字段的合并
+    合并反序列化之后的字段 和 非json字段的合并
     :param updateDic:
     :param jsonType:
     :param filedName:
@@ -120,12 +126,22 @@ def handleInJsonToList(updateDic, jsonType = "",filedName = ""):
     filedsAndValueList = getBinlogValues(updateDic,filedName)# 获取binlog中的所有值，返回一个数组 index=0是fileds index=1 是values
 
     if filedName != "" and updateDic["event_type"] == 2:  # insert
+        #判断json类型
 
-        parseJsonList = jsonToList(updateDic["data"]["after"][filedName], filedName, jsonType=jsonType)
+        if jsonType == "phpjson":
+            parseJsonList = getListDefferSet(updateDic["data"]["before"][filedName], updateDic["data"]["after"][filedName])
+            # print("---3333---",parseJsonList)
+        else:
+            parseJsonList = jsonToList(updateDic["data"]["after"][filedName], filedName, jsonType=jsonType)
 
     elif filedName != "" and (updateDic["event_type"] == 1 or updateDic["event_type"] == 3):
+        # print("++++++++++ ", updateDic["data"][filedName])
+        # print("++++++++++ ", len(updateDic["data"][filedName]))
+        if len(updateDic["data"][filedName]) == 0:
+            pass
+        else:
 
-        parseJsonList = jsonToList(updateDic["data"][filedName], filedName, jsonType=jsonType)
+            parseJsonList = jsonToList(updateDic["data"][filedName], filedName, jsonType=jsonType)
 
 
     if len(parseJsonList) != 0:
@@ -169,17 +185,18 @@ def mergeAllFiledValue(updateDic, jsonType="", filedName=""):
            totalList.append(filedList)
            totalList.append(valueList)
         else:
-            filedList = handleInJsonToList(updateDic, jsonType, filedName)[0] + getBinlogValues(updateDic,filedName)[0] + updatedList[0]
-            # print("--------111---",handleInJsonToList(updateDic, jsonType, filedName))
-            for i in  handleInJsonToList(updateDic, jsonType, filedName)[1]:
+            filedList = handleInJsonToList(updateDic, jsonType, filedName)[0]  + updatedList[0]
 
-                valueList.append(getBinlogValues(updateDic,filedName)[1] + updatedList[1])
+            for i in  range(len(handleInJsonToList(updateDic, jsonType, filedName)[1])):
+                # print(handleInJsonToList(updateDic, jsonType, filedName)[1])
+                valueList.append(handleInJsonToList(updateDic, jsonType, filedName)[1][i]+ updatedList[1])
+
             totalList.append(filedList)
             totalList.append(valueList)
     else:
 
         totalList = handleInJsonToList(updateDic, jsonType,filedName )
-
+    # print("------1-----",totalList)
     return totalList
 
 

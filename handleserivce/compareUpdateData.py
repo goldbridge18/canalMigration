@@ -77,7 +77,7 @@ def getListDefferSet(before, after):
 
     totalList.append(fieldsList)
     totalList.append(valList)
-    print(os.path.basename(__file__),"--------->:",totalList)
+    # print(os.path.basename(__file__),"--------->:",totalList)
     return totalList
 
 
@@ -96,7 +96,6 @@ def parseUpdateJsonToSql(updateDic,filedName,hadTableName):
     valuesSqlList = ""
     jsontoList = []
     sqlList = []
-    # print("-------> ", updateDic["data"])
 
     for k, v in updateDic["data"]["after"].items():
         if k != filedName:

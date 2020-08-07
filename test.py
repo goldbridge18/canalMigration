@@ -91,7 +91,6 @@ from handleserivce.handleJson import jsonToList
 print("------>",jsonToList(str05,11,"phpjson"))
 # print("------>",jsonToList01(str05,11,"phpjson"))
 
-key =  ['json_in', 'json_out', 'json_exit_status']
-value  =  [['1501134167', '1501140558'], ['1501141533'], ['1']]
+str11 = '{["uid":"1000082","isInClass":1,"platformType":2]}'
 
-
+print(re.sub('\]$',"",re.sub('^\[?',"",str11)))

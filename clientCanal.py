@@ -12,6 +12,7 @@ from handleserivce.multHandle import multisql
 from handleserivce.tablestructe import tableStruncte,getMUTLResultOrJson
 from common.formatDateServer import formatDate
 from common.common import findUpdatedFiled
+from handleserivce.multHandle import getMUTLResultOrJson01
 
 '''
 需要安装的包：
@@ -125,10 +126,32 @@ while True:
                 if event_type == EntryProtocol_pb2.EventType.INSERT:
                     # 获取insert语句的数据
                     if len(jsonType) == 0:
-                        print("-----------------insert--------------------")
-                        res = getSql(data, hadTableName,jsonType, fieldName)
-                        print(res)
-                        print("--------------------------------------")
+
+                       if isSqlBatch == 1:
+                           # print("-------------------------------------2----------------")
+                           # getMUTLResultOrJson01(data, fieldName, jsonType)
+                           # print("-------------------------------------2----------------")
+
+                           # print("-------------------------------------2----------------")
+                           getMUTLResultOrJson01(data, fieldName, jsonType)
+                           get_function = getattr(tableStruncte, "eeo_class_member_time")
+                           val = get_function(getMUTLResultOrJson01(data, fieldName, jsonType))
+                           totalList.append(val)
+                           # print("---->totalList", totalList)
+                           multisql(totalList, getattr(tableStruncte, table_header), count, rowNum, flag)
+                           if count < rowNum:
+                               count += 1
+                           else:
+                               count = 1
+                               flag = False
+                               totalList = []
+                           # print("-------------------------------------2----------------")
+                       else:
+                            print("-----------------insert--------------------")
+                            res = getSql(data, hadTableName,jsonType, fieldName)
+                            execCmd(res)
+                            print(res)
+                            print("--------------------------------------")
                         # res = updateAndInsertSql(data,hadTableName)
                         # print("insert :", res)
                         # with open("./sql/insert_sql.sql", "a+", encoding="utf8") as f:
@@ -139,12 +162,20 @@ while True:
                         # if False : #批量
                             # 获取的批量插入的值
                             res = ""
-                            # val = tableStruncte.eeo_class_member_time(getMUTLResultOrJson(data, fieldName, jsonType, 1))
-                            get_function = getattr(tableStruncte,"eeo_class_member_time")
-                            val = get_function(getMUTLResultOrJson(data, fieldName, jsonType, 1))
+                            print("-------------------------------------2----------------")
+                            getMUTLResultOrJson01(data, fieldName, jsonType)
+                            get_function = getattr(tableStruncte, "eeo_class_member_time")
+                            val = get_function(getMUTLResultOrJson01(data, fieldName, jsonType))
                             totalList.append(val)
+                            print("---->totalList", totalList)
+                            multisql(totalList, getattr(tableStruncte, table_header), count, rowNum, flag)
+                            print("-------------------------------------2----------------")
+                            # val = tableStruncte.eeo_class_member_time(getMUTLResultOrJson(data, fieldName, jsonType, 1))
+                            # get_function = getattr(tableStruncte,"eeo_class_member_time")
+                            # val = get_function(getMUTLResultOrJson(data, fieldName, jsonType, 1))
+                            # totalList.append(val)
                             # print("---->totalList",totalList)
-                            multisql(totalList,getattr(tableStruncte,table_header), count,rowNum, flag) #判断是否插入
+                            # multisql(totalList,getattr(tableStruncte,table_header), count,rowNum, flag) #判断是否插入
                             if count < rowNum:
                                 count += 1
                             else:
@@ -169,18 +200,25 @@ while True:
                                 # print("insert1 :", i)
                 elif event_type == EntryProtocol_pb2.EventType.UPDATE:
 
+
+
                     if fieldName in findUpdatedFiled(data["updated_fields"]) or len(jsonType) > 0:
 
                         print("---------------update--json---------------------")
-                        # res = getSql(data, hadTableName, jsonType, fieldName)
-                        # print("res----1>:",res)
+                        res = getSql(data, hadTableName, jsonType, fieldName)
+                        print("res----1>:",res)
                         res = parseUpdateJsonToSql(data, fieldName,hadTableName)
+                        # execCmd(res)
                         print("res----2>:",res)
 
                     else:
                         # res = includeJsonSql(data, fieldName, 2)
                         res  = updateAndInsertSql(data,hadTableName)
+
+                        res1 = getSql(data, hadTableName, jsonType, fieldName)
+                        execCmd(res1)
                         print(res)
+                        print(res1)
                 # print("update : ", res)
                 elif event_type == EntryProtocol_pb2.EventType.DELETE:
 
@@ -188,6 +226,7 @@ while True:
 
                         print("--------------delete----1-------------------")
                         res = getSql(data, hadTableName, jsonType, fieldName)
+                        # execCmd(res)
                         print(res)
                         # res = updateAndInsertSql(data, hadTableName)
                         # print("insert :", res)
@@ -196,6 +235,7 @@ while True:
                     else:
                         print("--------------delete----2-------------------")
                         res = getSql(data, hadTableName, jsonType, fieldName)
+                        # execCmd(res)
                         print(res)
 
                         # res = includeJsonSql(data, hadTableName, fieldName, jsonType, 1)
