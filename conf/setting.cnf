@@ -3,12 +3,12 @@
 host=10.0.0.64
 port=11111
 client_id=1001
-destination=example1
+destination=test
 batchSize=1000
 
 [databaseInfo]
 
-databaseName=eo_os
+databaseName=test
 tableName=eeo_course_class
 fieldName=
 hadTableName=ods_eeo_class_log
@@ -23,10 +23,11 @@ isSqlBatch = 0
 [mysqlInfo]
 
 ipaddr=10.0.0.62
-userName=datax
-password=datax123
-databaseName=eo_hadoop
+userName=test
+password=test123
+databaseName=test
 port=61106
+
 [logInfo]
 
 [sync]

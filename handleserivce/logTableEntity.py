@@ -281,7 +281,7 @@ class LogTableEntity(object):
 
         return totalListToStr
 
-    eeo_course_class_header = "insert into ods_eeo_course_class_log (class_id,course_id,school_uid,class_number,class_name,teach_id,is_teach_id,cloud_folder," \
+    eeo_course_class_header = "insert into ods_eeo_class_log (class_id,course_id,school_uid,class_number,class_name,is_class_name,teach_id,is_teach_id,cloud_folder," \
           "is_cloud_folder,skin_id,is_skin_id,seat_num,is_seat_num,class_type,is_class_type,main_st_id,is_main_st_id,ass_st_id,is_ass_st_id,class_btime," \
           "is_class_btime,class_etime,is_class_etime,is_is_auto_onstage,class_status,is_class_status,is_dc,is_is_dc,add_status,is_add_status,live_state," \
           "is_live_state,record_state,is_record_state,open_state,is_open_state,watch_by_login,is_watch_by_login,allow_unlogged_chat,is_allow_unlogged_chat," \
@@ -292,31 +292,38 @@ class LogTableEntity(object):
             try:
              class_id = valDict["class_id"]
             except KeyError as e:
-            	class_id = "0"
+            	class_id = 0
             try:
              course_id = valDict["course_id"]
             except KeyError as e:
-            	course_id = "0"
+            	course_id = 0
             try:
              school_uid = valDict["school_uid"]
             except KeyError as e:
-            	school_uid = "0"
+            	school_uid = 0
             try:
              class_number = valDict["class_number"]
             except KeyError as e:
-            	class_number = "0"
+            	class_number = 0
             try:
              class_name = valDict["class_name"]
             except KeyError as e:
-            	class_name = "0"
+            	class_name = "NULL"
+            try:
+             is_class_name = valDict["is_class_name"]
+            except KeyError as e:
+            	is_class_name = 0
             try:
              teach_id = valDict["teach_id"]
             except KeyError as e:
-            	teach_id = "0"
+            	teach_id = 0
             try:
-             is_teach_id = valDict["is_teach_id"]
+                if len(valDict["is_teach_id"]) == 0:
+                    is_teach_id = 0
+                else:
+                    is_teach_id = valDict["is_teach_id"]
             except KeyError as e:
-            	is_teach_id = "0"
+            	is_teach_id = 0
             try:
              cloud_folder = valDict["cloud_folder"]
             except KeyError as e:
@@ -452,11 +459,11 @@ class LogTableEntity(object):
             try:
              is_lock = valDict["is_lock"]
             except KeyError as e:
-            	is_lock = "0"
+            	is_lock = 0
             try:
              is_is_lock = valDict["is_is_lock"]
             except KeyError as e:
-            	is_is_lock = "0"
+            	is_is_lock = 0
             try:
              client_class_id = valDict["client_class_id"]
             except KeyError as e:
@@ -481,7 +488,7 @@ class LogTableEntity(object):
              operation_type = valDict["operation_type"]
             except KeyError as e:
             	operation_type = 0
-            tempvalList = [class_id,course_id,school_uid,class_number,class_name,teach_id,is_teach_id,cloud_folder,is_cloud_folder,skin_id,is_skin_id,seat_num,is_seat_num,class_type,is_class_type,main_st_id,is_main_st_id,ass_st_id,is_ass_st_id,class_btime,is_class_btime,class_etime,is_class_etime,is_is_auto_onstage,class_status,is_class_status,is_dc,is_is_dc,add_status,is_add_status,live_state,is_live_state,record_state,is_record_state,open_state,is_open_state,watch_by_login,is_watch_by_login,allow_unlogged_chat,is_allow_unlogged_chat,is_lock,is_is_lock,client_class_id,is_client_class_id,is_hd,addtime,update_time,operation_type]
+            tempvalList = [class_id,course_id,school_uid,class_number,class_name,is_class_name,teach_id,is_teach_id,cloud_folder,is_cloud_folder,skin_id,is_skin_id,seat_num,is_seat_num,class_type,is_class_type,main_st_id,is_main_st_id,ass_st_id,is_ass_st_id,class_btime,is_class_btime,class_etime,is_class_etime,is_is_auto_onstage,class_status,is_class_status,is_dc,is_is_dc,add_status,is_add_status,live_state,is_live_state,record_state,is_record_state,open_state,is_open_state,watch_by_login,is_watch_by_login,allow_unlogged_chat,is_allow_unlogged_chat,is_lock,is_is_lock,client_class_id,is_client_class_id,is_hd,addtime,update_time,operation_type]
             totalList.append(tempvalList)
 
         totalListToStr = str(totalList).replace("[[", "(").replace("]]", ")").replace("[", "(").replace("]", ")").replace(

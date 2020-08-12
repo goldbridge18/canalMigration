@@ -55,6 +55,8 @@ def getBinlogValues(updateDic,filterFilde = ""):
         for k, v in updateDic["data"]["after"].items():
             if k == filterFilde :
                 pass
+            elif v == '' and updateDic["updated_fields"][k] == False:
+                pass
             else:
                 keyList.append(k)
                 valueList.append(v)

@@ -102,3 +102,4 @@ for i in tablelist:
     print("            	{name} = \"0\"".format(name=i))
 
 
+print(len(0))
