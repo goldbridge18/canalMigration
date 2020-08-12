@@ -5,8 +5,6 @@ cfg = ConfigParser()
 cfg.read("conf/setting.cnf")
 
 
-
-
 #mysql info
 
 ipaddr = cfg.get('mysqlInfo','ipaddr')
@@ -16,6 +14,8 @@ targetDatabaseName = cfg.get('mysqlInfo','databaseName')
 port = cfg.getint('mysqlInfo','port')
 
 #
+
+
 
 databaseName = cfg.get('databaseInfo','databaseName')
 tableName = cfg.get('databaseInfo','tableName')
@@ -30,3 +30,5 @@ destination = bytes("{destination}".format(destination=cfg.get('canalInfo','dest
 
 #获取指定的数据量
 batchSize = cfg.getint('canalInfo','batchSize')
+
+# print(tableName)

@@ -103,13 +103,12 @@ def multisql(val,header,count,size, flag):
     :param flag:
     :return:
     '''
-
     headerStr = header
     if count == size:
         flag = True
     if flag :
 
-       sql1 = headerStr + str(val).replace("[\"","").replace("\"]","").replace("\"","")
+       sql1 = headerStr + str(val).replace("[\"","").replace("\"]","").replace("\"","").replace("[\'","").replace("\']","")
        print("----------",datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"------------------")
        print("--------------------------插入数据----------------------------")
        # execCmd(sql1)

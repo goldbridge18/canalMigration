@@ -222,6 +222,29 @@ def getSql(updateDic, tableName,jsonType="", filedName=""):
     sqlList.append(sql)
     return sqlList
 
+def fieldsValueToDict(updateDic,jsonType="", filedName=""):
+    '''
+    指定字段 获取的值， 结合tablestructe class 表结构字段,  转换为json并将json格式作为一一个数组返回
+    :param updateDic:
+    :param tableName:
+    :param jsonType:
+    :param filedName:
+    :return:
+    '''
+    sqlList = []
+    totalList = []
+    tmpList = mergeAllFiledValue(updateDic, jsonType, filedName)
+
+    filedList = tmpList[0]
+    valueList = tmpList[1]
+
+    if filedName != "":
+        totalDict = dict(zip(filedList,valueList[0]))
+    else:
+        totalDict = dict(zip(filedList, valueList))
+
+    totalList.append(totalDict)
+    return totalList
 
 
 def includeJsonSql(updateDic,hapTableName ,filedName, jsonType,num):

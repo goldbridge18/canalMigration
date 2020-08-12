@@ -4,16 +4,21 @@ from handleserivce.multHandle import getMUTLResultOrJson,multisql
 from common.parseConfig import *
 class tableStruncte(object):
 
-    eeo_class_member_time_header = "insert into {hadTableName}(`id`,`school_uid`,`course_id`,`class_id`,`member_uid`,`member_account`,`member_nickname`," \
+    eeo_class_member_time_header = "insert into ods_eeo_class_member_time(`id`,`school_uid`,`course_id`,`class_id`,`member_uid`,`member_account`,`member_nickname`," \
                  "`is_late`,`is_on`,`is_early`,`identity`,`platform_type`,`stayin_time`,`add_time`,`client_class_id`,`json_in`,`json_platform_type`,`json_os_type`," \
-                 "`json_out` ,`json_exit_status`,`duration`,operation_type,execute_time) values ".format(hadTableName=hadTableName)
+                 "`json_out` ,`json_exit_status`,`duration`,operation_type,execute_time) values "
 
     ##eeo_course_homework
+
     eeo_course_homework_header = "into ods_eeo_course_homework (homework_id, course_id, school_uid, teacher_uid, homework_title, homework_desc, " \
                                  "image, video, audio, docs, problems_ids, status, is_open, is_revise, is_del, is_download, open_type, score_type, score_value, " \
                                  "end_time, start_time, update_time, add_time) values "
 
+    eeo_class_and_student_header = "insert into ods_eeo_class_and_student_log(class_and_student_id,course_id,class_id,stud_id,school_uid,student_uid,isdel,is_isdel,operation_type,execute_time) values"
+
+
     def eeo_class_member_time(valList):
+        print(valList)
         totalList = []
         for valDict in valList:
             try:
@@ -93,7 +98,10 @@ class tableStruncte(object):
             except KeyError as e:
                 json_out = 0
             try:
-                json_exit_status = valDict["json_exit_status"]
+                if len( valDict["json_exit_status"]) == 0:
+                    json_exit_status = 0
+                else:
+                    json_exit_status = valDict["json_exit_status"]
             except KeyError as e:
                 json_exit_status = 0
             try:
@@ -117,7 +125,7 @@ class tableStruncte(object):
         return  totalListToStr
 
 
-    def ods_eeo_course_homework(valList):
+    def eeo_course_homework(valList):
         totalList = []
         for valDict in valList:
             try:
@@ -220,7 +228,58 @@ class tableStruncte(object):
 
         return totalListToStr
 
+    def eeo_class_and_student(valList):
+        totalList = []
+        for valDict in valList:
+            try:
+                class_and_student_id = valDict["class_and_student_id"]
+            except KeyError as e:
+                class_and_student_id = "0"
+            try:
+                course_id = valDict["course_id"]
+            except KeyError as e:
+                course_id = "0"
+            try:
+                class_id = valDict["class_id"]
+            except KeyError as e:
+                class_id = "0"
+            try:
+                stud_id = valDict["stud_id"]
+            except KeyError as e:
+                stud_id = "0"
+            try:
+                school_uid = valDict["school_uid"]
+            except KeyError as e:
+                school_uid = "0"
+            try:
+                student_uid = valDict["student_uid"]
+            except KeyError as e:
+                student_uid = "0"
+            try:
+                isdel = valDict["isdel"]
+            except KeyError as e:
+                isdel = "0"
+            try:
+                is_isdel = valDict["is_isdel"]
+            except KeyError as e:
+                is_isdel = "0"
+            try:
+                operation_type = valDict["operation_type"]
+            except KeyError as e:
+                operation_type = "0"
+            try:
+                execute_time = valDict["execute_time"]
+            except KeyError as e:
+                execute_time = "0"
+            tempvalList = [class_and_student_id, course_id, class_id, stud_id, school_uid, student_uid, isdel, is_isdel,
+                           operation_type, execute_time]
+            totalList.append(tempvalList)
 
+
+        totalListToStr = str(totalList).replace("[[", "(").replace("]]", ")").replace("[", "(").replace("]", ")").replace(
+            " ", "")
+
+        return totalListToStr
 # count = 1
 # flag = False
 # totalList = []
