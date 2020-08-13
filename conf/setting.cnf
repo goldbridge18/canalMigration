@@ -9,10 +9,10 @@ batchSize=1000
 [databaseInfo]
 
 databaseName=test
-tableName=eeo_course_class
-fieldName=
+tableName=eeo_class_member_time
+fieldName=time_list
 hadTableName=ods_eeo_class_log
-jsonType=
+jsonType=phpjson
 
 [dataInfo]
 

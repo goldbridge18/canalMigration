@@ -73,17 +73,18 @@ def jsonToList(jsonStr, fieldName="", jsonType="json"):
                     try:
                         tmpList.append(valuesList[j][i])
                     except Exception as e:
-                        tmpList.append(valuesList[j][-1])
+                        # tmpList.append(valuesList[j][-1])
+                        tmpList.append("0")
 
                 totalList.append(tmpList)
         else:
             totalList.append(valuesList)
     except Exception as e:
         # print("---------------->",e)
-        writeLogContext(e,"info")
-        with open("./logs/error_json.txt","a+") as f:
-            f.write("\n")
-            f.write("{a} : {b}".format(a =e ,b=jsonStr))
+        writeLogContext("{a} : {b}".format(a =e ,b=jsonStr),"info")
+        # with open("./logs/error_json.txt","a+") as f:
+        #     f.write("\n")
+        #     f.write("{a} : {b}".format(a =e ,b=jsonStr))
         return []
     # print("----totalList------>",totalList)
     return totalList

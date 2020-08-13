@@ -94,7 +94,7 @@ str05 = 'a:3:{s:2:"in";a:2:{i:0;s:10:"1501134167";i:1;s:10:"1501140558";}s:3:"ou
 # str11 = '{["uid":"1000082","isInClass":1,"platformType":2]}'
 #
 # print(re.sub('\]$',"",re.sub('^\[?',"",str11)))
-tablelist = ['class_id','course_id','school_uid','class_number','class_name','teach_id','is_teach_id','cloud_folder','is_cloud_folder','skin_id','is_skin_id','seat_num','is_seat_num','class_type','is_class_type','main_st_id','is_main_st_id','ass_st_id','is_ass_st_id','class_btime','is_class_btime','class_etime','is_class_etime','is_is_auto_onstage','class_status','is_class_status','is_dc','is_is_dc','add_status','is_add_status','live_state','is_live_state','record_state','is_record_state','open_state','is_open_state','watch_by_login','is_watch_by_login','allow_unlogged_chat','is_allow_unlogged_chat','is_lock','is_is_lock','client_class_id','is_client_class_id','is_hd','addtime','update_time','operation_type']
+tablelist = ['class_id']
 for i in tablelist:
     print("            try:")
     print("             {name} = valDict[\"{name}\"]".format(name=i))
@@ -102,4 +102,9 @@ for i in tablelist:
     print("            	{name} = \"0\"".format(name=i))
 
 
-print(len(0))
+from handleserivce.compareUpdateData import getListDefferSet
+from handleserivce.handleJson import jsonToList
+
+jsonstr = 'a:5:{s:2:"in";a:2:{i:0;s:10:"1589942374";i:1;s:10:"1589943741";}s:13:"platform_type";a:2:{i:0;i:303;i:1;i:303;}s:7:"os_type";a:2:{i:0;i:7;i:1;i:7;}s:3:"out";a:1:{i:0;s:10:"1589943679";}s:11:"exit_status";a:1:{i:0;s:2:"56";}}'
+
+print(jsonToList(jsonstr, "", "phpjson"))
