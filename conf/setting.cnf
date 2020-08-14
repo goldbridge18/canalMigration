@@ -11,10 +11,11 @@ batchSize=1000
 databaseName=test
 tableName=eeo_class_member_time
 fieldName=time_list
-hadTableName=ods_eeo_class_log
+hadTableName=ods_eeo_class_member_in_out
 jsonType=phpjson
 
 [dataInfo]
+
 
 rowNum = 1
 #0 single 1batch

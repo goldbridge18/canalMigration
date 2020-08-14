@@ -248,7 +248,7 @@ def fieldsValueToDict(updateDic,jsonType="", filedName=""):
     return totalList
 
 
-def includeJsonSql(updateDic,hapTableName ,filedName, jsonType,num):
+def includeJsonSql(updateDic,hapTableName ,filedName, jsonType,num): #废弃
 
     '''
     反序列化 json phpjson 后，生成insert语句

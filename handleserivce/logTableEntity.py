@@ -4,7 +4,7 @@ from handleserivce.multHandle import getMUTLResultOrJson,multisql
 from common.parseConfig import *
 class LogTableEntity(object):
 
-    eeo_class_member_time_header = "insert into ods_eeo_class_member_time(`id`,`school_uid`,`course_id`,`class_id`,`member_uid`,`member_account`,`member_nickname`," \
+    eeo_class_member_time_header = "insert into ods_eeo_class_member_in_out(`id`,`school_uid`,`course_id`,`class_id`,`member_uid`,`member_account`,`member_nickname`," \
                  "`is_late`,`is_on`,`is_early`,`identity`,`platform_type`,`stayin_time`,`add_time`,`client_class_id`,`json_in`,`json_platform_type`,`json_os_type`," \
                  "`json_out` ,`json_exit_status`,`duration`,operation_type,execute_time) values "
 

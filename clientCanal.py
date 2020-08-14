@@ -142,18 +142,13 @@ while True:
                                count = 1
                                flag = False
                                totalList = []
-                           # print("-----------------insert--------------------")
-                           # res = getSql(data, hadTableName, jsonType, fieldName)
-                           # # execCmd(res)
-                           # print(res)
-                           # print("--------------------------------------")
 
                        else: # 单条解析
 
                             print("-----------------insert---2-----------------")
                             res = getSql(data, hadTableName, jsonType, fieldName)
                             execCmd(res)
-                            print(res)
+                            # print(res)
                     else:
                         if isSqlBatch == 1 : #批量
                         # if False : #批量
@@ -161,7 +156,7 @@ while True:
                             res = ""
                             print("-------------------------------------2----------------")
                             # getMUTLResultOrJson01(data, fieldName, jsonType)
-                            get_function = getattr(tableStruncte, "eeo_class_member_time")
+                            get_function = getattr(tableStruncte, tableName)
                             val = get_function(getMUTLResultOrJson01(data, fieldName, jsonType))
                             totalList.append(val)
                             # print("---->totalList", totalList)
@@ -171,7 +166,6 @@ while True:
                             # get_function = getattr(tableStruncte,"eeo_class_member_time")
                             # val = get_function(getMUTLResultOrJson(data, fieldName, jsonType, 1))
                             # totalList.append(val)
-                            # print("---->totalList",totalList)
                             # multisql(totalList,getattr(tableStruncte,table_header), count,rowNum, flag) #判断是否插入
                             if count < rowNum:
                                 count += 1
@@ -183,26 +177,30 @@ while True:
 
                             print("---------------insert--json---------------------")
                             res = getSql(data, hadTableName, jsonType, fieldName)
-                            print(res)
+                            execCmd(res)
+                            # print(res)
                             # res = includeJsonSql(data,hadTableName,fieldName,jsonType, 1)
-                            # print("-----------start---------------")
-                            # res = getSql(data, hadTableName, jsonType, fieldName)
-                                # print("insert1 :", i)
+
                 elif event_type == EntryProtocol_pb2.EventType.UPDATE:
 
                     if fieldName in findUpdatedFiled(data["updated_fields"]) or len(jsonType) > 0:
 
                         print("---------------update--1---------------------")
+                        '''
                         #没哟解析
                         res = getSql(data, hadTableName)
                         # execCmd(res)
                         print(res)
                         # # res = parseUpdateJsonToSql(data, fieldName,hadTableName)
+                        '''
+                        res = getSql(data, hadTableName,jsonType, fieldName)
+                        execCmd(res)
+                        # print(res)
                         #解析之后
-                        get_function = getattr(LogTableEntity, tableName)
-                        val = get_function(fieldsValueToDict(data, jsonType, fieldName))
-                        totalList.append(val)
-                        multisql(totalList, getattr(LogTableEntity, table_header), count, 1, flag)
+                        # get_function = getattr(LogTableEntity, tableName)
+                        # val = get_function(fieldsValueToDict(data, jsonType, fieldName))
+                        # totalList.append(val)
+                        # multisql(totalList, getattr(LogTableEntity, table_header), count, 1, flag)
 
                     else:
                         # res = includeJsonSql(data, fieldName, 2)
@@ -210,7 +208,7 @@ while True:
                         print("---------------update--2---------------------")
                         res1 = getSql(data, hadTableName, jsonType, fieldName)
                         execCmd(res1)
-                        print(res1)
+                        # print(res1)
                         # get_function = getattr(LogTableEntity, tableName)
                         # val = get_function(fieldsValueToDict(data, jsonType, fieldName))
                         # totalList.append(val)
@@ -222,21 +220,22 @@ while True:
 
                         print("--------------delete----1-------------------")
                         res = getSql(data, hadTableName, jsonType, fieldName)
-                        print(res)
+                        # print(res)
                         execCmd(res)
                     else:
                         print("--------------delete----2-------------------")
                         #解析之后
                         res = getSql(data, hadTableName, jsonType, fieldName)
                         execCmd(res)
-                        print(res)
-                        print("--------------delete----3-------------------")
+                        # print(res)
+                        # print("--------------delete----3-------------------")
+                        '''
                         #没有解析
                         res1 = getSql(data,hadTableName)
                         # execCmd(res)
-                        # print(res1)
+                        print(res1)
                         # res = includeJsonSql(data, hadTableName, fieldName, jsonType, 1)
-
+                        '''
             else:
 
                 pass
