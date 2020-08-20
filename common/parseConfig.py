@@ -14,13 +14,9 @@ targetDatabaseName = cfg.get('mysqlInfo','databaseName')
 port = cfg.getint('mysqlInfo','port')
 
 #
-
-
-
 databaseName = cfg.get('databaseInfo','databaseName')
 tableName = cfg.get('databaseInfo','tableName')
 fieldName = cfg.get('databaseInfo','fieldName')
-hadTableName = cfg.get('databaseInfo','hadTableName')
 jsonType = cfg.get('databaseInfo','jsonType')
 
 #canal
@@ -31,4 +27,3 @@ destination = bytes("{destination}".format(destination=cfg.get('canalInfo','dest
 #获取指定的数据量
 batchSize = cfg.getint('canalInfo','batchSize')
 
-# print(tableName)

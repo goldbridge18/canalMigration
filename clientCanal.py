@@ -1,6 +1,5 @@
 import time
-import re, datetime
-from configparser  import ConfigParser
+import re, datetime,json
 from canal.client import Client
 from canal.protocol import EntryProtocol_pb2
 from canal.protocol import CanalProtocol_pb2
@@ -31,14 +30,16 @@ cfg = ConfigParser()
 cfg.read("conf/setting.cnf")
 
 databaseName = cfg.get('databaseInfo','databaseName')
-# tableName = cfg.get('databaseInfo','tableName')
+tableName = cfg.get('databaseInfo','tableName')
 fieldName = cfg.get('databaseInfo','fieldName')
-hadTableName = cfg.get('databaseInfo','hadTableName')
+# hadTableName = cfg.get('databaseInfo','hadTableName')
 jsonType = cfg.get('databaseInfo','jsonType')
+tableList = []
+tableDict = json.loads(tableName)
+for key,value in tableDict.items():
+    tableList.append(key)
 
-tableList = cfg.get('databaseInfo','tableName').split(",")
-
-
+print(tableList)
 #批量生成insert
 rowNum = cfg.getint('dataInfo','rowNum')
 isSqlBatch = cfg.getint('dataInfo','isSqlBatch')
@@ -111,6 +112,7 @@ while True:
             # --------------------数据处理-------------------------------------------
             # print(updated_fields)
             # print(data)
+            # getUpdatedFieldsValue(data)
             data.setdefault("updated_fields",data["updated_fields"])
             #获取binlog的logfile，posistion、binlog的执行时间
             binlogInfo = dict()
@@ -125,7 +127,10 @@ while True:
             if data['db'] == databaseName and data['table'] in tableList:
                 tableName = data['table']
                 # tableHeader
-                table_header = tableName + "_header"
+                table_header = data['table'] + "_header"
+                # mysql表对应hive表的表名
+                hadTableName = tableDict[data['table']]
+
                 # 获取sql
                 if event_type == EntryProtocol_pb2.EventType.INSERT:
                     # 获取insert语句的数据

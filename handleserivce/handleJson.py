@@ -6,7 +6,7 @@ import phpserialize
 
 from collections import abc
 from common.common import nestedDictIter,getBinlogValues
-from handleserivce.compareUpdateData import setUpdatedFieldValue
+from handleserivce.compareUpdateData import setUpdatedFieldOfSatusValue
 from common.loggerout import writeLogContext
 from handleserivce.compareUpdateData import getListDefferSet
 
@@ -177,7 +177,7 @@ def mergeAllFiledValue(updateDic, jsonType="", filedName=""):
 
     if updateDic["event_type"] == 2:
 
-        updatedList = setUpdatedFieldValue(updateDic, filedName) #获取key为true的值
+        updatedList = setUpdatedFieldOfSatusValue(updateDic, filedName) #获取key为true的值
 
         if filedName == "":
            filedList =  getBinlogValues(updateDic,filedName)[0] + updatedList[0]

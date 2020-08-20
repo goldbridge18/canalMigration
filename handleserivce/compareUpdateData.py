@@ -142,9 +142,9 @@ def parseUpdateJsonToSql(updateDic,filedName,hadTableName):
 
 
 
-def setUpdatedFieldValue(updateDic,filedName=''):
+def setUpdatedFieldOfSatusValue(updateDic,filedName=''):
     '''
-    统计所有update的状态字段，返回list
+    统计所有update的状态  字段，返回list
     :param updateDic:
     :param filedName:
     :return: 值为list index 0位key index 1位value
@@ -184,3 +184,12 @@ def setUpdatedFieldValue(updateDic,filedName=''):
     AllTotalList.append(keyList)
     AllTotalList.append(valList)
     return AllTotalList
+
+
+def getUpdatedFieldsValue(updateDic):
+    fieldsList = findUpdatedFiled(updateDic["updated_fields"])
+    totalDict = dict()
+    for name in fieldsList:
+       totalDict[name] = updateDic["data"]["after"][name]
+
+    print("======> ",totalDict)

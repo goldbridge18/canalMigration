@@ -1,18 +1,17 @@
 [canalInfo]
 
-host=10.0.0.64
+host=10.0.0.62
 port=11111
 client_id=1001
-destination=test
-batchSize=1000
+destination=example
+batchSize=2000
 
 [databaseInfo]
 
 databaseName=test
-tableName=eeo_class_member_time
-fieldName=time_list
-hadTableName=ods_eeo_class_member_in_out
-jsonType=phpjson
+tableName=
+fieldName=
+jsonType=
 
 [dataInfo]
 
@@ -22,7 +21,6 @@ rowNum = 1
 isSqlBatch = 0
 
 [mysqlInfo]
-
 ipaddr=10.0.0.62
 userName=test
 password=test123
