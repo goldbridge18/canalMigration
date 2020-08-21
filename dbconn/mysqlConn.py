@@ -10,7 +10,7 @@ from common.loggerout import writeLogContext
 
 
 
-def execCmd(query):
+def execCmd(query,data = ""):
     '''
     insert/update command
     :param query:
@@ -36,6 +36,7 @@ def execCmd(query):
     except Exception as e:
         conn.rollback()
         writeLogContext(e,"info")
+        writeLogContext(data,"info")
         writeLogContext(query,"info")
         # with open("../logs/err_sql.log", "a+", encoding="utf8") as f:
         #     f.write("\n")

@@ -182,7 +182,7 @@ while True:
 
                             print("---------------insert--json---------------------")
                             res = getSql(data, hadTableName, jsonType, fieldName)
-                            execCmd(res)
+                            execCmd(res,data)
                             # print(res)
                             # res = includeJsonSql(data,hadTableName,fieldName,jsonType, 1)
 
