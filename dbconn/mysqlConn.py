@@ -26,6 +26,8 @@ def execCmd(query):
         cursor = conn.cursor()
         if isinstance(query,list):
             for sql in query:
+                sql = sql.replace("\'NULL\'","NULL")
+                print(sql)
                 cursor.execute(sql)
         else:
             cursor.execute(query)

@@ -111,7 +111,7 @@ while True:
 
             # --------------------数据处理-------------------------------------------
             # print(updated_fields)
-            # print(data)
+            print(data)
             # getUpdatedFieldsValue(data)
             data.setdefault("updated_fields",data["updated_fields"])
             #获取binlog的logfile，posistion、binlog的执行时间

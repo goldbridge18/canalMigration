@@ -22,3 +22,8 @@ for i in tablelist:
     print("            	{name} = \"0\"".format(name=i))
 
 
+
+
+h = "11www,4444,55ttt"
+
+print(re.match("(.*)(,\s*\d+)*",h).group())

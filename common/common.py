@@ -58,9 +58,10 @@ def getBinlogValues(updateDic,filterFilde = ""):
             elif v == '' and updateDic["updated_fields"][k] == False:
                 pass
             elif v == '' and updateDic["updated_fields"][k] == True:
-                v = "0"
-                keyList.append(k)
-                valueList.append(v)
+                v = "NULL"
+                pass
+                # keyList.append(k)
+                # valueList.append(v)
             else:
                 keyList.append(k)
                 valueList.append(v)
@@ -70,9 +71,10 @@ def getBinlogValues(updateDic,filterFilde = ""):
             if k == filterFilde:
                 pass
             elif v == '' :
-                v = "0"
-                keyList.append(k)
-                valueList.append(v)
+                v = "NULL"
+                pass
+                # keyList.append(k)
+                # valueList.append(v)
             else:
                 keyList.append(k)
                 valueList.append(v)
