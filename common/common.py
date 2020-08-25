@@ -71,7 +71,7 @@ def getBinlogValues(updateDic,filterFilde = ""):
             if k == filterFilde:
                 pass
             elif v == '' :
-                v = "NULL"
+                # v = "NULL"
                 pass
                 # keyList.append(k)
                 # valueList.append(v)

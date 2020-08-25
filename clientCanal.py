@@ -39,7 +39,8 @@ tableDict = json.loads(tableName)
 for key,value in tableDict.items():
     tableList.append(key)
 
-print(tableList)
+tableNameType = cfg.getint('databaseInfo','tableNameType')
+# print(tableList)
 #批量生成insert
 rowNum = cfg.getint('dataInfo','rowNum')
 isSqlBatch = cfg.getint('dataInfo','isSqlBatch')
@@ -111,8 +112,9 @@ while True:
 
             # --------------------数据处理-------------------------------------------
             # print(updated_fields)
-            print(data)
+            # print(data)
             # getUpdatedFieldsValue(data)
+
             data.setdefault("updated_fields",data["updated_fields"])
             #获取binlog的logfile，posistion、binlog的执行时间
             binlogInfo = dict()
@@ -124,12 +126,20 @@ while True:
             # data.setdefault("execute_time",formatDate(header.executeTime))
             data.setdefault("execute_time",round(header.executeTime/1000))
 
+            if tableNameType == 1 :
+               tableName =  data['table'].split("_")[0]
+               if tableName in tableList:
+                   tableList.append(data['table'])
+
             if data['db'] == databaseName and data['table'] in tableList:
                 tableName = data['table']
                 # tableHeader
                 table_header = data['table'] + "_header"
                 # mysql表对应hive表的表名
-                hadTableName = tableDict[data['table']]
+                if tableNameType == 1:
+                    hadTableName = tableDict[data['table'].split("_")[0]]
+                else:
+                    hadTableName = tableDict[data['table']]
 
                 # 获取sql
                 if event_type == EntryProtocol_pb2.EventType.INSERT:
@@ -242,8 +252,9 @@ while True:
                         # res = includeJsonSql(data, hadTableName, fieldName, jsonType, 1)
                         '''
             else:
-
                 pass
+
+
     time.sleep(0.001)
 
 client.disconnect()
