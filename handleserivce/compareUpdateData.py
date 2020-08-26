@@ -161,14 +161,20 @@ def setUpdatedFieldOfSatusValue(updateDic,filedName=''):
         tmpList = filedsName + jsontoList
 
         for value in tmpList:
-            totalList.append("is_"+value)
+            if value == "reform":
+                totalList.append("is_" + value + "01")
+            else:
+                totalList.append("is_"+value)
 
         # print("++++++++++++++++1",totalList)
         # # return totalList
     else:
         tmpList = findUpdatedFiled(updateDic["updated_fields"])
         for value in tmpList:
-            totalList.append("is_" + value)
+            if value == "reform":
+                totalList.append("is_" + value + "01")
+            else:
+                totalList.append("is_" + value)
         # print("++++++++++++++++2",totalList)
 
     # filedsAndValue = dict()
