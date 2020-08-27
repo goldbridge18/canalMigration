@@ -37,9 +37,6 @@ def execCmd(query,data = ""):
         writeLogContext(e,"info")
         writeLogContext(data,"info")
         writeLogContext(query,"info")
-        # with open("../logs/err_sql.log", "a+", encoding="utf8") as f:
-        #     f.write("\n")
-        #     f.write("{date}-->{i}: ".format(date = dateCur,i = query))
     conn.close()
 #多线程执行.(出现重复插入的情况，待解决)
 def concurExecSql(strList):

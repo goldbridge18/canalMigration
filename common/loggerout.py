@@ -1,12 +1,12 @@
 import logging
 import os,datetime
 
+from common.setting import basePath
 curDate =  datetime.datetime.now().strftime("%Y-%m-%d")
-basePath = os.path.dirname(os.path.dirname(__file__))
+# basePath = os.path.dirname(os.path.dirname(__file__))
 logfilepath = "{path}/logs/info_{date}.log".format(path = basePath,date = curDate)
 if not os.path.exists("{basePath}/logs".format(basePath = basePath)):
     os.makedirs("{basePath}/logs".format(basePath = basePath))
-print(logfilepath)
 def writeLogContext(context,modlename):
 
     #创建logger记录器

@@ -112,7 +112,7 @@ while True:
 
             # --------------------数据处理-------------------------------------------
             # print(updated_fields)
-            # print(data)
+            print(data)
             # getUpdatedFieldsValue(data)
 
             data.setdefault("updated_fields",data["updated_fields"])
@@ -126,7 +126,7 @@ while True:
             # data.setdefault("execute_time",formatDate(header.executeTime))
             data.setdefault("execute_time",round(header.executeTime/1000))
 
-            if tableNameType == 1 :
+            if tableNameType == 1 and data['db'] in ['eo_account',"eo_userinfo"]:
                tableName =  data['table'].split("_")[0]
                if tableName in tableList:
                    tableList.append(data['table'])

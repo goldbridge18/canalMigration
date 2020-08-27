@@ -1,8 +1,9 @@
 
 from configparser import ConfigParser
+from common.setting import basePath
 
 cfg = ConfigParser()
-cfg.read("conf/setting.cnf")
+cfg.read("{basePath}/conf/setting.cnf".format(basePath=basePath))
 
 
 #mysql info
