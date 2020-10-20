@@ -19,17 +19,17 @@ from handleserivce.multHandle import getMUTLResultOrJson01
 
 '''
 需要安装的包：
-pip install canal-python
-pip install protobuf
-pip install google-cloud-translate
-pip install google-cloud 
-pip install --upgrade google-api-python-client
+pip3 install canal-python
+pip3 install protobuf
+pip3 install google-cloud-translate
+pip3 install google-cloud 
+pip3 install --upgrade google-api-python-client
 '''
 
 #参数值设置：
 
 cfg = ConfigParser()
-cfg.read("conf/setting.cnf")
+cfg.read("{basepath}/conf/setting.cnf".format(basepath = basePath))
 
 databaseName = cfg.get('databaseInfo','databaseName')
 tableName = cfg.get('databaseInfo','tableName')

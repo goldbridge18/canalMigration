@@ -7,11 +7,10 @@ destination=example
 batchSize=2000
 
 [databaseInfo]
-
 databaseName=test
-tableName={"eeo_course_homework":"ods_eeo_homework_setup_log","eeo_course_homework_students":"ods_eeo_homework_handin_log","eeo_school_auth":"ods_eeo_school_auth_log","eeo_school_auth_info":"ods_eeo_school_auth_info_log","eeo_course":"ods_eeo_course_log","eeo_order":"ods_eeo_order_log"}
-fieldName=
-jsonType=
+tableName={"eeo_class_member_time":"ods_eeo_class_member_in_out_1"}
+fieldName=time_list
+jsonType=phpjson
 tableNameType = 0
 
 [dataInfo]
