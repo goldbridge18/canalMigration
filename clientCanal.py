@@ -15,6 +15,8 @@ from common.common import findUpdatedFiled
 from handleserivce.multHandle import getMUTLResultOrJson01
 
 
+
+
 '''
 需要安装的包：
 pip install canal-python
