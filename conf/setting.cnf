@@ -8,9 +8,10 @@ batchSize=2000
 
 [databaseInfo]
 databaseName=test
-tableName={"eeo_class_member_time":"ods_eeo_class_member_in_out_1"}
-fieldName=time_list
-jsonType=phpjson
+tableName={"ClassSummary32":"ods_ClassSummary32"}
+fieldName=
+jsonType=
+# 1 is prefix table eg：table_000000;0 is not prxfix table
 tableNameType = 0
 
 [dataInfo]

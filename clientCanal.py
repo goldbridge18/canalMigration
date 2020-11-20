@@ -42,6 +42,7 @@ for key,value in tableDict.items():
     tableList.append(key)
 
 tableNameType = cfg.getint('databaseInfo','tableNameType')
+#tableNameType 1表示UsageInfo_xxxxx 前缀表
 # print(tableList)
 #批量生成insert
 rowNum = cfg.getint('dataInfo','rowNum')

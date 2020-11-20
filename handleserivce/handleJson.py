@@ -1,10 +1,9 @@
 
-import time
-import pymysql
-import re, datetime, json
+import re
+import json
 import phpserialize
 
-from collections import abc
+
 from common.common import nestedDictIter,getBinlogValues
 from handleserivce.compareUpdateData import setUpdatedFieldOfSatusValue
 from common.loggerout import writeLogContext
