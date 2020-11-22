@@ -116,8 +116,10 @@ str002 ={"ts":6871111718345375747,"v":2,"op":"i","ns":"hamster.ClassSummary44","
 for val in str002["o"]:
     if val["Name"] == "Data":
         for i in val["Value"]:
-            print("------start----------------------")
             print(getDataToCover(i))
+    else:
+        print({val["Name"]:val["Value"]})
+        
 
 
 print("-------------------------------------------------------------------------------------")
@@ -130,3 +132,13 @@ str003 = {'Name': 'muteEnd', 'Value': [{'Name': 'Persons', 'Value': [{'Name': '1
 
 # tmp_list = [{x["Name"]:v}  for x in str004["Value"] for v in  x["Value"] ]
 # print([{k:{v["Name"]:v["Value"]}} for val in tmp_list  for k,v in val.items()])
+
+
+def ourSum(lower,upper):
+    if lower > upper:
+        return 0
+    else:
+        print("---->:",lower,upper)
+        return lower + ourSum(lower + 1 ,upper)
+
+print("--------->>>>>",ourSum(1,10))
