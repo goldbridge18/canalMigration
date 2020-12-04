@@ -1,31 +1,59 @@
-import json
-import conf
+
+import  json,re
+from handleserivce.handleKafkaJson import getClassSummaryNum
+from handleserivce.handleKafkaJson import getClassDetailsData
+from handleserivce.handleKafkaJson import getClassDetailsUpdateOperation
+
 from kafka import KafkaConsumer
+from kafka import TopicPartition
 
-Options = None
-isQuit = False
-process_ctrls = []
+global null ,false ,true
+null = ""
+false = 0
+true = 1
 
-def kafka_consumer_process():
-    consumer = KafkaConsumer(bootstrap_servers=conf.KAFKA_BROKERS, group_id=Options.group_id or "php-group",
-                             enable_auto_commit=False, value_deserializer=lambda x: json.loads(x.decode('ascii')))
+consumer = KafkaConsumer( group_id='mongo-group1', bootstrap_servers=['10.0.0.64:9092'])
+consumer.assign([TopicPartition(topic= 'mongodb-tes', partition= 0)])
+print("-----------welcome use kafka ---------------")
+for message in consumer:
+    # print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))
+    data = eval(str(message.value, encoding="utf8"))
 
-    if Options.topics:
-        topics = Options.topics.split(',')
-    else:
-        topics = "php-topic"
-    consumer.subscribe(topics)
+    try:
+        tableName = re.search('ClassDetails_|ClassSummary',data["ns"]).group()
+    except AttributeError as e:
+        tableName = ''
 
-    # db = myMongo.myMongoClient()
-    # try:
-    #     while not isQuit:
-    #         msg_pack = consumer.poll(timeout_ms=100)
-    #         for tp, messages in msg_pack.items():
-    #             for message in messages:
-    #                 handle_php(db, message)
-    #         consumer.commit_async()
-    # except Exception as e:
-    #     print("kafka_consumer_process exception: %s", str(e))
-    # finally:
-    #     consumer.commit()
-    #     consumer.close()
+    if tableName == "ClassDetails_":
+        # print("--------------------------------------------",tableName)
+        # print(data)
+        if data["op"] == "i":
+            pass
+            # print("--------insert----------", data)
+            getClassDetailsData(data)
+        elif data["op"] == "u":
+            pass
+            # print("--------update----------", data)
+            # getClassDetailsUpdateOperation(data)
+        elif data["op"] == "d":
+            pass
+            # print("--------delete----------", data)
+        else:
+            # print("------------->:", data)
+            exit()
+
+    elif tableName == "ClassSummary" :
+        if data["op"] == "d":
+            pass
+            # print ("--------deleted----------",data)
+        elif data["op"] == "i":
+            pass
+            # print ("--------insert----------",data)
+            # getClassSummaryNum(data)
+        elif data["op"] == "u":
+            pass
+            # print ("--------updated----------",data)
+            exit()
+        else:
+            print("------------->:",data)
+            exit()
