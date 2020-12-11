@@ -1,0 +1,129 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 3,
+        "byte": 1048576
+      },
+      "errorLimit": {
+        "record": 0,
+        "percentage": 0.02
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "datax",
+            "password": "datax123",
+            "splitPk": "",
+            "connection": [
+              {
+                "querySql": [
+                  "select  *  from ${dt};"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://10.1.42.6:61106/eo_userinfo"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://eeo-gic1-bj-zi-idc20-dhd112:8020",
+            "fileType": "text",
+            "path": "/user/hive/warehouse/eo_hadoop.db/ods_eeo_cluster_member",
+            "fileName": "ods_eeo_cluster_member",
+            "writeMode": "append",
+            "fieldDelimiter": "\u0001",
+            "column": [
+              {
+                "name": "aid",
+                "type": "bigint"
+              },
+              {
+                "name": "clusterid",
+                "type": "bigint"
+              },
+              {
+                "name": "type",
+                "type": "bigint"
+              },
+              {
+                "name": "uid",
+                "type": "bigint"
+              },
+              {
+                "name": "status",
+                "type": "bigint"
+              },
+              {
+                "name": "cardsetting",
+                "type": "bigint"
+              },
+              {
+                "name": "cardinfover",
+                "type": "bigint"
+              },
+              {
+                "name": "nickname",
+                "type": "string"
+              },
+              {
+                "name": "identity",
+                "type": "bigint"
+              },
+              {
+                "name": "classidentity",
+                "type": "bigint"
+              },
+              {
+                "name": "gender",
+                "type": "bigint"
+              },
+              {
+                "name": "tel",
+                "type": "varchar"
+              },
+              {
+                "name": "email",
+                "type": "varchar"
+              },
+              {
+                "name": "comment",
+                "type": "varchar"
+              },
+              {
+                "name": "membersettingflags",
+                "type": "bigint"
+              },
+              {
+                "name": "allowspeaktime",
+                "type": "bigint"
+              },
+              {
+                "name": "exitmsgid",
+                "type": "bigint"
+              },
+              {
+                "name": "exitdisplayablemsgid",
+                "type": "bigint"
+              },
+              {
+                "name": "timetag",
+                "type": "bigint"
+              },
+              {
+                "name": "updatetime",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

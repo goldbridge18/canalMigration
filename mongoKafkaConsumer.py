@@ -29,8 +29,14 @@ for message in consumer:
         # print(data)
         if data["op"] == "i":
             pass
-            # print("--------insert----------", data)
+            print("--------insert----------", data["ns"])
             getClassDetailsData(data)
+            # print(getClassDetailsData(data))
+            # for i in getClassDetailsData(data):
+            #     from dbconn.mysqlConn import execCmd
+                # query = ""
+                # print(query)
+                # execCmd(i,data)
         elif data["op"] == "u":
             pass
             # print("--------update----------", data)

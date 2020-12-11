@@ -36,6 +36,14 @@ def nestedDictIter(nested):
             yield key, value
 
 
+xxx = '{"mouseEvent":{"eventType":"","targetId":"","eventData":{}},"isPlay":true,"progress":[1,0,0]}'
+xxx = '{"at":"改个","a":"op","d":"editor","v":71,"src":"e386636486ab273d943ca05c03bcb455","seq":72,"op":[{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}]}'
+import json
+print(json.loads(xxx))
+for i in nestedDictIter(json.loads(xxx)):
+    print(i)
+
+
 def getBinlogValues(updateDic,filterFilde = ""):
     '''
     获取binlog的数据信息
