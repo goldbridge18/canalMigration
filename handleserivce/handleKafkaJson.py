@@ -551,22 +551,15 @@ def getClassDetailsData(string):
         if val["Name"] == "Data":
             for val in val["Value"]:
                 tmpDictValueNotList = {}
-                tmpDictValueInList = {}
-                tmpStrToJson = {}
+
                 # print("---------------------------->1", val)
                 noListData = [v for x in val  for k,v in x.items() if not isinstance(x["Value"],list) and not isinstance(x["Value"],dict) ]
                 num = [x for x in range(len(noListData)) if x % 2 == 0]
                 for i in num:
                     tmpDictValueNotList[noListData[i]] = noListData[i + 1]
-                # print("---------------------------->2", tmpDictValueNotList)
-                # print("===============================", handleStringJson(tmpDictValueNotList))
-                # print("---------------------------->4", tmpDictValueNotList.keys())
-                if "Action" in tmpDictValueNotList.keys() and len(tmpDictValueNotList["Action"]) != 0 :
-                    tmpStrToJson = strToJsonHandleFunc(tmpDictValueNotList["Action"])
-                    del tmpDictValueNotList["Action"]
-                tmpDictValueNotList = dict(tmpStrToJson,**tmpDictValueNotList)
-                # print("---------------------------->3", tmpDictValueNotList)
-                # listData = [v for x in val  if  isinstance(x["Value"],list) and not isinstance(x["Value"][0],list) for k,v in x.items()]
+                #递归处理json
+                tmpDictValueNotList =  handleStringJson(tmpDictValueNotList)
+                print("---------------------------->3", tmpDictValueNotList)
                 listDataInDict = [{x["Name"].lower():v} for x in val if isinstance(x["Value"], list) and len(x["Value"]) > 0 for k, v in
                              x.items() if isinstance(v[0], dict)]
                 # print("listData------------>1",listDataInDict)
@@ -607,7 +600,7 @@ def getClassDetailsData(string):
                            totalList.append(dict(dict(tmpDict, **tmpDictValueNotList), **commDataDict))
                 # print("------------------------------------------------------")
 
-    # print(totalList)
+    print(totalList)
     insertList = handleJsonTosql(totalList,tableName,"date",commDataDict)
     # print(insertList)
     # return  insertList
