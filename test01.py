@@ -952,34 +952,94 @@ llll = '{"at":"改个","a":"op","d":"editor","v":56,"src":"e386636486ab273d943ca
 
 
 xxx = {'Cave': 'cave1592562194-1001921', 'ActionTime': 1592562249, 'SourceUID': 1001921, 'Cmd': 67502176, 'Action': '{"at":"改个","a":"op","d":"editor","v":71,"src":"e386636486ab273d943ca05c03bcb455","seq":72,"op":[{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}]}', 'AID': 274, 'TargetUID': 0, 'GroupID': 0}
-
-def nestedDictIter(nested):
+def nestedStrToDictIter(nested):
     for key, value in nested.items():
         # print(key,value)
         if isinstance(value, abc.Mapping):
             # yield from nested_dict_iter(value)
             # print("-------",value)
-            for k2 in nestedDictIter(value):
+            for k2 in nestedStrToDictIter(value):
                 if isinstance(k2, int):
                     k2 = str(k2)
                 yield (key,) + k2
         elif isinstance(value, list) and isinstance(value[0],abc.Mapping):
             for val in value:
-                yield from nestedDictIter(val)
+                yield from nestedStrToDictIter(val)
 
         else:
+            if isinstance(value,list):
+                value = str(tuple(value)).replace("\'","")
             yield key, value
 
+#字符串是json格式的
 def handleStringJson(string):
     totalDict = {}
     for key,val in string.items():
+        # print(key, val)
         try:
             if isinstance(json.loads(val),abc.Mapping):
-                for i in nestedDictIter(json.loads(val)):
+                for i in nestedStrToDictIter(json.loads(val)):
                     totalDict.update({i[-2]: i[-1]})
                 # totalDict = handleStringJson(val)
+            else:
+                totalDict.update({key:val})
         except Exception as e:
             totalDict.update({key:val})
     return  totalDict
 
-handleStringJson(xxx)
+
+# xxx = [{'Name': 'ActionTime', 'Value': 1594606589}, {'Name': 'Operation', 'Value': 0}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'NewGroupNum_List', 'Value': [[{'Name': 'GroupID', 'Value': 1}, {'Name': 'Name', 'Value': ''}], [{'Name': 'GroupID', 'Value': 2}, {'Name': 'Name', 'Value': ''}]]}, {'Name': 'Cmd', 'Value': 67502369}, {'Name': 'ModGroupNum_Num', 'Value': 0}, {'Name': 'ModGroupNum_List', 'Value': []}, {'Name': 'NewGroupNum_Num', 'Value': 2}, {'Name': 'DelGroupNum_Num', 'Value': 0}, {'Name': 'UserNum_List', 'Value': [[{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013564}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013565}, {'Name': 'GroupID', 'Value': 2}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013566}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013567}, {'Name': 'GroupID', 'Value': 2}]]}, {'Name': 'DelGroupNum_List', 'Value': []}, {'Name': 'AID', 'Value': 3}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'UserNum_Num', 'Value': 4}]
+xxx = [{'Name': 'ActionTime', 'Value': 1594606602}, {'Name': 'Operation', 'Value': 1}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'NewGroupNum_List', 'Value': []}, {'Name': 'Cmd', 'Value': 67502369}, {'Name': 'ModGroupNum_Num', 'Value': 0}, {'Name': 'ModGroupNum_List', 'Value': []}, {'Name': 'NewGroupNum_Num', 'Value': 0}, {'Name': 'DelGroupNum_Num', 'Value': 0}, {'Name': 'UserNum_List', 'Value': [[{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013564}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}], [{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013566}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}], [{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013565}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}], [{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013567}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 10}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}]]}, {'Name': 'DelGroupNum_List', 'Value': []}, {'Name': 'AID', 'Value': 10}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'UserNum_Num', 'Value': 4}]
+# xxx = [{'Name': 'Cmd', 'Value': 67502371}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'PolicyNum_List', 'Value': [[{'Name': 'Broadcast', 'Value': 1}, {'Name': 'PacketFamily', 'Value': 1}, {'Name': "\n          'TargetUserNum_List", 'Value': []}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'SourceFlag', 'Value': 1}, {'Name': 'TargetGroupNum_List', 'Value': []}, {'Name': 'SourceGroupID', 'Value': 0}, {'Name': 'TargetGroupNum_Num', 'Value': 0}, {'Name': "\n          'TargetUserNum_Num", 'Value': 0}]]}, {'Name': 'ActionTime', 'Value': 1594606591}, {'Name': 'AID', 'Value': 5}, {'Name': 'PolicyNum_Num', 'Value': 1}, {'Name': 'TargetUID', 'Value': 0}]
+# xxx = [{'Name': 'ActionTime', 'Value': 1594606567}, {'Name': 'StageTime', 'Value': 1594606567}, {'Name': 'UID', 'Value': 1013563}, {'Name': 'UserSettings', 'Value': 3}, {'Name': 'ClientType', 'Value': 0}, {'Name': 'LoginMobile', 'Value': '12112160450'}, {'Name': 'Cmd', 'Value': 67502241}, {'Name': 'ClientOSFlag', 'Value': 6}, {'Name': 'PresentRecvAbility', 'Value': 0}, {'Name': 'Device', 'Value': 0}, {'Name': 'Equipments', 'Value': 7}, {'Name': 'Alias', 'Value': ''}, {'Name': 'AllowEnterTime', 'Value': 0}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'PresentSendAbility', 'Value': 0}, {'Name': 'AID', 'Value': 1}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'NickName', 'Value': 'topgao'}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Identity', 'Value': 3}]
+
+xxx = [{'Name': 'ActionTime', 'Value': 1594606589}, {'Name': 'Operation', 'Value': 0}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'NewGroupNum_List', 'Value': [[{'Name': 'GroupID', 'Value': 1}, {'Name': 'Name', 'Value': ''}], [{'Name': 'GroupID', 'Value': 2}, {'Name': 'Name', 'Value': ''}]]}, {'Name': 'Cmd', 'Value': 67502369}, {'Name': 'ModGroupNum_Num', 'Value': 0}, {'Name': 'ModGroupNum_List', 'Value': []}, {'Name': 'NewGroupNum_Num', 'Value': 2}, {'Name': 'DelGroupNum_Num', 'Value': 0}, {'Name': 'UserNum_List', 'Value': [[{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013564}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013565}, {'Name': 'GroupID', 'Value': 2}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013566}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013567}, {'Name': 'GroupID', 'Value': 2}]]}, {'Name': 'DelGroupNum_List', 'Value': []}, {'Name': 'AID', 'Value': 3}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'UserNum_Num', 'Value': 4}]
+
+
+xxx = {"at":"改个","a":"op","d":"editor","v":56,"src":"e386636486ab273d943ca05c03bcb455","seq":57,"op":[{"p":["code",75],"sd":"🐕"}]}
+xxx = '[{"fileId":"","src":"homework/upload/homework/images/20191210/8ca86a49979aed375320.png","whiteBoardMole":"WhiteBoard-HomeworkImage-8ca86a49979aed375320"},{"fileId":"","src":"homework/upload/homework/images/20191210/72172ff11f3a80b62802.png","whiteBoardMole":"WhiteBoard-HomeworkImage-72172ff11f3a80b62802"}]'
+# xxx = {"fileId":"","src":"homework/upload/homework/images/20191210/8ca86a49979aed375320.png","whiteBoardMole":"WhiteBoard-HomeworkImage-8ca86a49979aed375320"}
+
+xxx = {"content":"1","sendName":"85","type":0}
+xxx = {"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}
+# strToJsonHandleFunc(xxx)
+
+# print(handleStringJson(xxx))
+
+# print(re.match("^\'\[\{",xxx))
+
+from kafkaserver.handleDetails import nestedMongKafkaJsonToList,handleDetailsKeyData,handleJsonTosql
+def getClassDetailsUpdateOperation(string,operation = "update"):
+
+    id = string["o2"]["_id"]
+    tableName = "ClassDetails"
+    totalList = []
+    updateData = []
+    tmpDict = {}
+
+    tmpDict.update({"id":id})
+
+    for value in string["o"] :
+        if value["Name"] == "$set":
+            updateData = value["Value"]
+    print("--------------->",updateData)
+    if len(updateData) == 0:
+        return  dict()
+    else:
+        for val in updateData:
+            tmpDict.update({"updateRowNum":val["Name"]})
+            print(handleDetailsKeyData(val,operation))
+            for i in handleDetailsKeyData(val,operation):
+                totalList.append(dict(tmpDict,**i))
+            # totalList += handleDetailsKeyData(val,operation)
+
+    #     print("------------------------------------------------------")
+        print(totalList)
+        handleJsonTosql(totalList,tableName,"date")
+    #     print("------------------------------------------------------")
+
+xxx = {'ts': 6872993047165009921, 'v': 2, 'op': 'u', 'ns': 'hamster.ClassDetails_2020_09_04', 'o': [{'Name': '$v', 'Value': 1}, {'Name': '$set', 'Value': [{'Name': 'Data.501', 'Value': [{'Name': 'ActionTime', 'Value': 1600243458}, {'Name': 'Area', 'Value': [{'Name': 'Y', 'Value': 202}, {'Name': 'X', 'Value': 540}, {'Name': 'Height', 'Value': 312}, {'Name': 'Width', 'Value': 568}]}, {'Name': 'Title', 'Value': '李玉刚 - 刚好遇见你(315527).mp3'}, {'Name': 'AID', 'Value': 3364}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'Type', 'Value': 3}, {'Name': 'FileUrl', 'Value': '/upload/trans/83/7a/7186/mp3-96k/7354ff97c6903d613026.mp3'}, {'Name': 'SourceUID', 'Value': 1013195}, {'Name': 'OSize', 'Value': [{'Name': 'Width', 'Value': 300}, {'Name': 'Height', 'Value': 170}]}, {'Name': 'PlaybackStatus', 'Value': 1}, {'Name': 'Stamp', 'Value': 0}, {'Name': 'PlayPosition', 'Value': 0}, {'Name': 'Cmd', 'Value': 67502160}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Uid', 'Value': 1000127}, {'Name': 'BoundUID', 'Value': 0}, {'Name': 'Color', 'Value': 'shareWidget7644-1000157'}, {'Name': 'FileName', 'Value': '李玉刚 - 刚好遇见你(315527).mp3'}, {'Name': 'ZIndex', 'Value': 28}, {'Name': 'Duration', 'Value': 200072}, {'Name': 'PlaySpeed', 'Value': 1}, {'Name': 'FileId', 'Value': '7644-1000157'}]}]}], 'o2': {'_id': '5f616d4826eb009dd12ebd5e'}, 'lsid': {'id': {'Kind': 4, 'Data': 'iM6WtwCeQvG0NbcyvgzWgg=='}, 'uid': '47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='}, 'txnNumber': 15383}
+
+getClassDetailsUpdateOperation(xxx)
+
+

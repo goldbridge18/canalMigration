@@ -1,8 +1,8 @@
 
 import  json,re
-from handleserivce.handleKafkaJson import getClassSummaryNum
-from handleserivce.handleKafkaJson import getClassDetailsData
-from handleserivce.handleKafkaJson import getClassDetailsUpdateOperation
+from kafkaserver.handleSummary import getClassSummaryNum
+from kafkaserver.handleDetails import getClassDetailsData
+from kafkaserver.handleDetails import getClassDetailsUpdateOperation
 
 from kafka import KafkaConsumer
 from kafka import TopicPartition
@@ -31,16 +31,17 @@ for message in consumer:
             pass
             print("--------insert----------", data["ns"])
             getClassDetailsData(data)
+            # print(data)
             # print(getClassDetailsData(data))
             # for i in getClassDetailsData(data):
             #     from dbconn.mysqlConn import execCmd
-                # query = ""
-                # print(query)
-                # execCmd(i,data)
+            #     query = ""
+            #     print(query)
+            #     execCmd(i,data)
         elif data["op"] == "u":
             pass
             # print("--------update----------", data)
-            # getClassDetailsUpdateOperation(data)
+            getClassDetailsUpdateOperation(data)
         elif data["op"] == "d":
             pass
             # print("--------delete----------", data)
@@ -55,7 +56,7 @@ for message in consumer:
         elif data["op"] == "i":
             pass
             # print ("--------insert----------",data)
-            # getClassSummaryNum(data)
+            getClassSummaryNum(data)
         elif data["op"] == "u":
             pass
             # print ("--------updated----------",data)

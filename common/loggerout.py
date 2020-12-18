@@ -4,7 +4,7 @@ import os,datetime
 from common.setting import basePath
 
 def writeLogContext(context,modlename):
-    curDate = datetime.datetime.now().strftime("%Y-%m-%d")
+    curDate = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     # curDate = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     # basePath = os.path.dirname(os.path.dirname(__file__))
     logfilepath = "{path}/logs/info_{date}.log".format(path=basePath, date=curDate)

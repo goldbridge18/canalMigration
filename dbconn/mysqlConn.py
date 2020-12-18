@@ -35,7 +35,8 @@ def execCmd(query,data = ""):
     except Exception as e:
         conn.rollback()
         writeLogContext(e,"info")
-        writeLogContext(data,"info")
+        if len(data) != 0 :
+            writeLogContext(data,"info")
         writeLogContext(query,"info")
     conn.close()
 #多线程执行.(出现重复插入的情况，待解决)
