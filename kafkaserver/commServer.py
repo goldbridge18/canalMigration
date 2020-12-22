@@ -32,18 +32,27 @@ def nestedStrToDictIter(nested):
 
 #字符串是json格式的
 def handleStringJson(string):
+    '''
+
+    :param string:
+    :return:
+    '''
     totalDict = {}
+    tmpDict = {}
     for key,val in string.items():
         # print(key, val)
         try:
             if isinstance(json.loads(val),abc.Mapping):
-                for i in nestedStrToDictIter(json.loads(val)):
-                    totalDict.update({key + "_" + i[-2]: i[-1]})
-                # totalDict = handleStringJson(val)
+                # for i in nestedStrToDictIter(json.loads(val)):
+                #     tmpDict.update({key + "_" + i[-2]: i[-1]})
+                # print("-----------------------111",tmpDict)
+                # totalDict.update(key,str(tmpDict))
+                pass
             else:
                 totalDict.update({key:val})
         except Exception as e:
             totalDict.update({key:val})
+
     return  totalDict
 
 
@@ -74,7 +83,7 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
         fieldsList = []
         valuesList = []
 
-        print("----------------------->",val)
+        # print("----------------------->",val)
         if tableNameKey == "classsummary":
             tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
             val = dict(zip(tmpKeyList,list(val.values())))
@@ -87,8 +96,9 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
         if len(fieldsList) != 0:
             # print("------",str(tuple(fieldsList[0])))
             fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
-            # print(fieldsStr)
-            valuesStr = str(valuesList).replace("[(", "(").replace(")]", ")").replace("[", "'[").replace("]", "]'").replace("{","").replace("}","")
+            # print("------------",valuesList[0])
+            # valuesStr = str(valuesList).replace("[(", "(").replace(")]", ")").replace("[", "'[").replace("]", "]'").replace("{","").replace("}","").replace("None","")
+            valuesStr = str(valuesList[0]).replace("[", "\"[").replace("]", "]\"").replace("None","")
 
             # print( tableName,"------fieldsList----------1", fieldsStr)
             # print( tableName,"---------valuesList-------1", valuesStr)
@@ -96,8 +106,8 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
             from dbconn.mysqlConn import execCmd
             query = "insert into " + tableName + fieldsStr +" value" + valuesStr + ";"
             # totalFieldsList.append(query)
-            # print(query)
-            execCmd(query,context)
+            print(query)
+            # execCmd(query,context)
 
         else:
             print(tableName,"------fieldsList----------2", fieldsList)
