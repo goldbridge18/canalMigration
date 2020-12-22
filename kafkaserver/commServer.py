@@ -71,9 +71,11 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
     tableName = "eeo_{table}_".format(table=tableNameKey) + keyName.lower()
     for valdict in string :
         for key,val in valdict.items():
+            print(key,val)
             if key.isdigit():
                 UID = key
                 addTmpDict.update({"Uid":key})
+                print(addTmpDict)
             # print([dict(x,**addTmpDict) for x in val ])
                 totalList += [dict(x,**addTmpDict) for x in val ]
             else:
@@ -98,7 +100,8 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
             fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
             # print("------------",valuesList[0])
             # valuesStr = str(valuesList).replace("[(", "(").replace(")]", ")").replace("[", "'[").replace("]", "]'").replace("{","").replace("}","").replace("None","")
-            valuesStr = str(valuesList[0]).replace("[", "\"[").replace("]", "]\"").replace("None","")
+            # valuesStr = str(valuesList[0]).replace("[", "\"[").replace("]", "]\"").replace("None","").replace("\"[", "(").replace("]\"", ")")
+            valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")")
 
             # print( tableName,"------fieldsList----------1", fieldsStr)
             # print( tableName,"---------valuesList-------1", valuesStr)
