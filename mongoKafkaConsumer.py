@@ -3,6 +3,7 @@ import  json,re
 from kafkaserver.handleSummary import getClassSummaryNum
 from kafkaserver.handleDetails import getClassDetailsData
 from kafkaserver.handleDetails import getClassDetailsUpdateOperation
+from common.parseConfig import groupId,bootstrapServers,topic
 
 from kafka import KafkaConsumer
 from kafka import TopicPartition
@@ -12,8 +13,9 @@ null = ""
 false = 0
 true = 1
 
-consumer = KafkaConsumer( group_id='mongo-group1', bootstrap_servers=['10.0.0.64:9092'])
-consumer.assign([TopicPartition(topic= 'mongodb-tes', partition= 0)])
+# consumer = KafkaConsumer( group_id='mongo-group1', bootstrap_servers=['10.0.0.64:9092'])
+consumer = KafkaConsumer( group_id=groupId, bootstrap_servers= bootstrapServers.split(","))
+consumer.assign([TopicPartition(topic= topic, partition= 0)])
 print("-----------welcome use kafka ---------------")
 for message in consumer:
     print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))

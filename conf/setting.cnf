@@ -32,3 +32,8 @@ port=61106
 
 [sync]
 incrementSync = 1
+
+[kafkaInfo]
+groupId=mongo-group1
+bootstrapServers=10.0.0.64:9092
+topic=mongodb-tes

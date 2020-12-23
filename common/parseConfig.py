@@ -28,3 +28,8 @@ destination = bytes("{destination}".format(destination=cfg.get('canalInfo','dest
 #获取指定的数据量
 batchSize = cfg.getint('canalInfo','batchSize')
 
+
+#kafka
+groupId = cfg.get('kafkaInfo','groupId')
+bootstrapServers=cfg.get('kafkaInfo','bootstrapServers')
+topic=cfg.get('kafkaInfo','topic')

@@ -949,97 +949,93 @@ llll = '{"at":"改个","a":"op","d":"editor","v":56,"src":"e386636486ab273d943ca
 # xxx = '{"at":"改个","a":"op","d":"editor","v":71,"src":"e386636486ab273d943ca05c03bcb455","seq":72,"op":[{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}]}'
 # xxx = '{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}'
 # print(handleStringJson(xxx))
-
-
-xxx = {'Cave': 'cave1592562194-1001921', 'ActionTime': 1592562249, 'SourceUID': 1001921, 'Cmd': 67502176, 'Action': '{"at":"改个","a":"op","d":"editor","v":71,"src":"e386636486ab273d943ca05c03bcb455","seq":72,"op":[{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}]}', 'AID': 274, 'TargetUID': 0, 'GroupID': 0}
-def nestedStrToDictIter(nested):
-    for key, value in nested.items():
-        # print(key,value)
-        if isinstance(value, abc.Mapping):
-            # yield from nested_dict_iter(value)
-            # print("-------",value)
-            for k2 in nestedStrToDictIter(value):
-                if isinstance(k2, int):
-                    k2 = str(k2)
-                yield (key,) + k2
-        elif isinstance(value, list) and isinstance(value[0],abc.Mapping):
-            for val in value:
-                yield from nestedStrToDictIter(val)
-
-        else:
-            if isinstance(value,list):
-                value = str(tuple(value)).replace("\'","")
-            yield key, value
-
-#字符串是json格式的
-def handleStringJson(string):
-    totalDict = {}
-    for key,val in string.items():
-        # print(key, val)
-        try:
-            if isinstance(json.loads(val),abc.Mapping):
-                for i in nestedStrToDictIter(json.loads(val)):
-                    totalDict.update({i[-2]: i[-1]})
-                # totalDict = handleStringJson(val)
-            else:
-                totalDict.update({key:val})
-        except Exception as e:
-            totalDict.update({key:val})
-    return  totalDict
-
-
-# xxx = [{'Name': 'ActionTime', 'Value': 1594606589}, {'Name': 'Operation', 'Value': 0}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'NewGroupNum_List', 'Value': [[{'Name': 'GroupID', 'Value': 1}, {'Name': 'Name', 'Value': ''}], [{'Name': 'GroupID', 'Value': 2}, {'Name': 'Name', 'Value': ''}]]}, {'Name': 'Cmd', 'Value': 67502369}, {'Name': 'ModGroupNum_Num', 'Value': 0}, {'Name': 'ModGroupNum_List', 'Value': []}, {'Name': 'NewGroupNum_Num', 'Value': 2}, {'Name': 'DelGroupNum_Num', 'Value': 0}, {'Name': 'UserNum_List', 'Value': [[{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013564}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013565}, {'Name': 'GroupID', 'Value': 2}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013566}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013567}, {'Name': 'GroupID', 'Value': 2}]]}, {'Name': 'DelGroupNum_List', 'Value': []}, {'Name': 'AID', 'Value': 3}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'UserNum_Num', 'Value': 4}]
-xxx = [{'Name': 'ActionTime', 'Value': 1594606602}, {'Name': 'Operation', 'Value': 1}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'NewGroupNum_List', 'Value': []}, {'Name': 'Cmd', 'Value': 67502369}, {'Name': 'ModGroupNum_Num', 'Value': 0}, {'Name': 'ModGroupNum_List', 'Value': []}, {'Name': 'NewGroupNum_Num', 'Value': 0}, {'Name': 'DelGroupNum_Num', 'Value': 0}, {'Name': 'UserNum_List', 'Value': [[{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013564}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}], [{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013566}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}], [{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013565}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}], [{'Name': 'StageTime', 'Value': 0}, {'Name': 'UID', 'Value': 1013567}, {'Name': 'UserSettings', 'Value': 0}, {'Name': 'Role', 'Value': 10}, {'Name': 'Invisible', 'Value': 0}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'AllowEnterTime', 'Value': 0}]]}, {'Name': 'DelGroupNum_List', 'Value': []}, {'Name': 'AID', 'Value': 10}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'UserNum_Num', 'Value': 4}]
-# xxx = [{'Name': 'Cmd', 'Value': 67502371}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'PolicyNum_List', 'Value': [[{'Name': 'Broadcast', 'Value': 1}, {'Name': 'PacketFamily', 'Value': 1}, {'Name': "\n          'TargetUserNum_List", 'Value': []}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'SourceFlag', 'Value': 1}, {'Name': 'TargetGroupNum_List', 'Value': []}, {'Name': 'SourceGroupID', 'Value': 0}, {'Name': 'TargetGroupNum_Num', 'Value': 0}, {'Name': "\n          'TargetUserNum_Num", 'Value': 0}]]}, {'Name': 'ActionTime', 'Value': 1594606591}, {'Name': 'AID', 'Value': 5}, {'Name': 'PolicyNum_Num', 'Value': 1}, {'Name': 'TargetUID', 'Value': 0}]
-# xxx = [{'Name': 'ActionTime', 'Value': 1594606567}, {'Name': 'StageTime', 'Value': 1594606567}, {'Name': 'UID', 'Value': 1013563}, {'Name': 'UserSettings', 'Value': 3}, {'Name': 'ClientType', 'Value': 0}, {'Name': 'LoginMobile', 'Value': '12112160450'}, {'Name': 'Cmd', 'Value': 67502241}, {'Name': 'ClientOSFlag', 'Value': 6}, {'Name': 'PresentRecvAbility', 'Value': 0}, {'Name': 'Device', 'Value': 0}, {'Name': 'Equipments', 'Value': 7}, {'Name': 'Alias', 'Value': ''}, {'Name': 'AllowEnterTime', 'Value': 0}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'PresentSendAbility', 'Value': 0}, {'Name': 'AID', 'Value': 1}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'NickName', 'Value': 'topgao'}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Identity', 'Value': 3}]
-
-xxx = [{'Name': 'ActionTime', 'Value': 1594606589}, {'Name': 'Operation', 'Value': 0}, {'Name': 'SourceUID', 'Value': 1013563}, {'Name': 'NewGroupNum_List', 'Value': [[{'Name': 'GroupID', 'Value': 1}, {'Name': 'Name', 'Value': ''}], [{'Name': 'GroupID', 'Value': 2}, {'Name': 'Name', 'Value': ''}]]}, {'Name': 'Cmd', 'Value': 67502369}, {'Name': 'ModGroupNum_Num', 'Value': 0}, {'Name': 'ModGroupNum_List', 'Value': []}, {'Name': 'NewGroupNum_Num', 'Value': 2}, {'Name': 'DelGroupNum_Num', 'Value': 0}, {'Name': 'UserNum_List', 'Value': [[{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013564}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013565}, {'Name': 'GroupID', 'Value': 2}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 0}, {'Name': 'UID', 'Value': 1013566}, {'Name': 'GroupID', 'Value': 1}], [{'Name': 'Invisible', 'Value': 0}, {'Name': 'Role', 'Value': 1}, {'Name': 'UID', 'Value': 1013567}, {'Name': 'GroupID', 'Value': 2}]]}, {'Name': 'DelGroupNum_List', 'Value': []}, {'Name': 'AID', 'Value': 3}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'UserNum_Num', 'Value': 4}]
-
-
-xxx = {"at":"改个","a":"op","d":"editor","v":56,"src":"e386636486ab273d943ca05c03bcb455","seq":57,"op":[{"p":["code",75],"sd":"🐕"}]}
-xxx = '[{"fileId":"","src":"homework/upload/homework/images/20191210/8ca86a49979aed375320.png","whiteBoardMole":"WhiteBoard-HomeworkImage-8ca86a49979aed375320"},{"fileId":"","src":"homework/upload/homework/images/20191210/72172ff11f3a80b62802.png","whiteBoardMole":"WhiteBoard-HomeworkImage-72172ff11f3a80b62802"}]'
-# xxx = {"fileId":"","src":"homework/upload/homework/images/20191210/8ca86a49979aed375320.png","whiteBoardMole":"WhiteBoard-HomeworkImage-8ca86a49979aed375320"}
-
-xxx = {"content":"1","sendName":"85","type":0}
-xxx = {"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}
-# strToJsonHandleFunc(xxx)
-
-# print(handleStringJson(xxx))
-
-# print(re.match("^\'\[\{",xxx))
-
-from kafkaserver.handleDetails import nestedMongKafkaJsonToList,handleDetailsKeyData,handleJsonTosql
-def getClassDetailsUpdateOperation(string,operation = "update"):
-
-    id = string["o2"]["_id"]
-    tableName = "ClassDetails"
-    totalList = []
-    updateData = []
-    tmpDict = {}
-
-    tmpDict.update({"id":id})
-
-    for value in string["o"] :
-        if value["Name"] == "$set":
-            updateData = value["Value"]
-    print("--------------->",updateData)
-    if len(updateData) == 0:
-        return  dict()
+def nestedMongKafkaJsonToList(nested):
+    '''
+    递归或获取 key 是Name、Value的值
+    :param nested:
+    :return:
+    '''
+    if isinstance(nested["Value"],list) :
+         # print("---------->11",nested["Value"])
+         if  len(nested["Value"]) != 0:
+            for val in nested["Value"]:
+                # print("---",val)
+                if isinstance(val,list):
+                    for i in val:
+                        # print(i)
+                        if isinstance(i["Value"],list):
+                            if len(i["Value"]) != 0:
+                                yield from nestedMongKafkaJsonToList(i)
+                        else:
+                            yield from nestedMongKafkaJsonToList(i)
+                elif isinstance(val,abc.Mapping):
+                    yield from nestedMongKafkaJsonToList(val)
     else:
-        for val in updateData:
-            tmpDict.update({"updateRowNum":val["Name"]})
-            print(handleDetailsKeyData(val,operation))
-            for i in handleDetailsKeyData(val,operation):
-                totalList.append(dict(tmpDict,**i))
-            # totalList += handleDetailsKeyData(val,operation)
+        for key, value in nested.items():
+            if isinstance(value, list) and isinstance(value[0],abc.Mapping):
+                for val in value:
+                    yield from nestedMongKafkaJsonToList(val)
 
-    #     print("------------------------------------------------------")
-        print(totalList)
-        handleJsonTosql(totalList,tableName,"date")
-    #     print("------------------------------------------------------")
+            elif isinstance(value, list) and isinstance(value[0], list) :
+                for i in value[0]:
+                    if isinstance(i["Value"],list) and  len(i["Value"]) ==0:
+                        pass
+                    else:
 
-xxx = {'ts': 6872993047165009921, 'v': 2, 'op': 'u', 'ns': 'hamster.ClassDetails_2020_09_04', 'o': [{'Name': '$v', 'Value': 1}, {'Name': '$set', 'Value': [{'Name': 'Data.501', 'Value': [{'Name': 'ActionTime', 'Value': 1600243458}, {'Name': 'Area', 'Value': [{'Name': 'Y', 'Value': 202}, {'Name': 'X', 'Value': 540}, {'Name': 'Height', 'Value': 312}, {'Name': 'Width', 'Value': 568}]}, {'Name': 'Title', 'Value': '李玉刚 - 刚好遇见你(315527).mp3'}, {'Name': 'AID', 'Value': 3364}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'Type', 'Value': 3}, {'Name': 'FileUrl', 'Value': '/upload/trans/83/7a/7186/mp3-96k/7354ff97c6903d613026.mp3'}, {'Name': 'SourceUID', 'Value': 1013195}, {'Name': 'OSize', 'Value': [{'Name': 'Width', 'Value': 300}, {'Name': 'Height', 'Value': 170}]}, {'Name': 'PlaybackStatus', 'Value': 1}, {'Name': 'Stamp', 'Value': 0}, {'Name': 'PlayPosition', 'Value': 0}, {'Name': 'Cmd', 'Value': 67502160}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Uid', 'Value': 1000127}, {'Name': 'BoundUID', 'Value': 0}, {'Name': 'Color', 'Value': 'shareWidget7644-1000157'}, {'Name': 'FileName', 'Value': '李玉刚 - 刚好遇见你(315527).mp3'}, {'Name': 'ZIndex', 'Value': 28}, {'Name': 'Duration', 'Value': 200072}, {'Name': 'PlaySpeed', 'Value': 1}, {'Name': 'FileId', 'Value': '7644-1000157'}]}]}], 'o2': {'_id': '5f616d4826eb009dd12ebd5e'}, 'lsid': {'id': {'Kind': 4, 'Data': 'iM6WtwCeQvG0NbcyvgzWgg=='}, 'uid': '47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='}, 'txnNumber': 15383}
+                        for va in  nestedMongKafkaJsonToList(i):
+                            print("-----------------------------error-------")
+            else:
+                yield value
 
-getClassDetailsUpdateOperation(xxx)
+def handleDetailsKeyData(string,operationType = "insert"):
+    '''
+    用于处理 key是Data中的值
+    :param string:
+    :return: 返回值 [{},{},{}]
+    '''
+    delKey = ["NewGroupNum_List","Json","chatmes"]
+    KeyMergeValue = ["DelGroupNum_List","affectedusers"]
+    KeyResetName = ["Area","PolicyNum_List"]
+    maxNum = 0
+    totalList = []
+    tmpTotalList = []
+    tmpOtherList = []
+    totalDictInsertList = []
 
+    #递归 获取dict的value
+    if operationType == "insert":
+        data = string
+    elif operationType == "update":
+        data = string["Value"]
+
+    try:
+        for i in data:
+            print("----------xxxxx--------", i)
+            if i["Name"] not in delKey:
+                count = 1
+                for val in nestedMongKafkaJsonToList(i):
+
+                    if i["Name"] in KeyMergeValue: # 把 [groupid:1,groupid:2,groupid:3] 枚举类型的合并
+                        if count%2 != 0:
+                            val = i["Name"] + "_" + val
+                            # print(val)
+                        tmpOtherList.append(val)
+                        count +=1
+                    elif i["Name"] in KeyResetName:
+                        if count % 2 != 0:
+                            val = i["Name"] + "_" + val
+                            # print(val)
+                        tmpTotalList.append(val)
+                        count += 1
+                    else:
+                        tmpTotalList.append(val)
+    except Exception as e:
+        print(e)
+    print(tmpTotalList)
+str002 = {'ts': 6908989279741935815, 'v': 2, 'op': 'i', 'ns': 'hamster.ClassSummary5', 'o': [{'Name': '_id', 'Value': '5fe1a925f3c5233407490799'}, {'Name': 'ActionTime', 'Value': 1608624421}, {'Name': 'CID', 'Value': 260605243}, {'Name': 'CourseID', 'Value': 121402475}, {'Name': 'Cmd', 'Value': 'End'}, {'Name': 'CloseTime', 'Value': 1608624331}, {'Name': 'StartTime', 'Value': 1608621600}, {'Name': 'SID', 'Value': 1153410}, {'Name': 'Data', 'Value': [{'Name': 'stageEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'UpTotal', 'Value': 1800}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 2}, {'Name': 'DownTotal', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'UpTotal', 'Value': 1575}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 1}, {'Name': 'DownTotal', 'Value': 0}]}]}, {'Name': 'handsupEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'CTime', 'Value': 3}, {'Name': 'Total', 'Value': 1}]}]}, {'Name': 'sharewidgetEnd', 'Value': [{'Name': 'Files', 'Value': [[{'Name': 'EndTime', 'Value': 1608621835}, {'Name': 'FileId', 'Value': '192619485-1153410'}, {'Name': 'Type', 'Value': 2}, {'Name': 'StartTime', 'Value': 1608621696}, {'Name': 'FileName', 'Value': '589d8a8e441511eb8d8e00163e2eb842.mp4'}], [{'Name': 'EndTime', 'Value': 1608624300}, {'Name': 'FileId', 'Value': '192619495-1153410'}, {'Name': 'Type', 'Value': 1}, {'Name': 'StartTime', 'Value': 1608621629}, {'Name': 'FileName', 'Value': '6015819a441511eb97ae00163e2eb842.pptx'}]]}, {'Name': 'Count', 'Value': 2}, {'Name': 'Total', 'Value': 2810}]}, {'Name': 'awardEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 15}]}]}, {'Name': 'silenceEnd', 'Value': [{'Name': 'SilenceAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}, {'Name': 'authorizeEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'Count', 'Value': 1}, {'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'inoutEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621341}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608621463}], [{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621493}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623171}]]}, {'Name': 'Identity', 'Value': 1}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621600}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623175}]]}, {'Name': 'Identity', 'Value': 3}]}]}, {'Name': 'kickoutEnd', 'Value': [{'Name': '28956248', 'Value': [[{'Name': 'Duration', 'Value': 0}, {'Name': 'Time', 'Value': 1608623171}]]}]}, {'Name': 'muteEnd', 'Value': [{'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'MuteAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}]}, {'Name': 'equipmentsEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1800}]}]}, {'Name': '1909074', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}]}], 'o2': '', 'lsid': {'id': {'Kind': 4, 'Data': 'awCI8tHdTbW4tWMWdWXhiA=='}, 'uid': '47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='}, 'txnNumber': 27693}
+str002 = [{'Name': 'stageEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'UpTotal', 'Value': 1800}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 2}, {'Name': 'DownTotal', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'UpTotal', 'Value': 1575}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 1}, {'Name': 'DownTotal', 'Value': 0}]}]}, {'Name': 'handsupEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'CTime', 'Value': 3}, {'Name': 'Total', 'Value': 1}]}]}, {'Name': 'sharewidgetEnd', 'Value': [{'Name': 'Files', 'Value': [[{'Name': 'EndTime', 'Value': 1608621835}, {'Name': 'FileId', 'Value': '192619485-1153410'}, {'Name': 'Type', 'Value': 2}, {'Name': 'StartTime', 'Value': 1608621696}, {'Name': 'FileName', 'Value': '589d8a8e441511eb8d8e00163e2eb842.mp4'}], [{'Name': 'EndTime', 'Value': 1608624300}, {'Name': 'FileId', 'Value': '192619495-1153410'}, {'Name': 'Type', 'Value': 1}, {'Name': 'StartTime', 'Value': 1608621629}, {'Name': 'FileName', 'Value': '6015819a441511eb97ae00163e2eb842.pptx'}]]}, {'Name': 'Count', 'Value': 2}, {'Name': 'Total', 'Value': 2810}]}, {'Name': 'awardEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 15}]}]}, {'Name': 'silenceEnd', 'Value': [{'Name': 'SilenceAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}, {'Name': 'authorizeEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'Count', 'Value': 1}, {'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'inoutEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621341}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608621463}], [{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621493}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623171}]]}, {'Name': 'Identity', 'Value': 1}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621600}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623175}]]}, {'Name': 'Identity', 'Value': 3}]}]}, {'Name': 'kickoutEnd', 'Value': [{'Name': '28956248', 'Value': [[{'Name': 'Duration', 'Value': 0}, {'Name': 'Time', 'Value': 1608623171}]]}]}, {'Name': 'muteEnd', 'Value': [{'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'MuteAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}]}, {'Name': 'equipmentsEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1800}]}]}, {'Name': '1909074', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}]
+# handleDetailsKeyData()
+for val in str002:
+
+    handleDetailsKeyData(val,"update")
 
