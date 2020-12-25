@@ -852,190 +852,166 @@ def getClassDetailsUpdateOperation(string):
 # tableName = []
 # new_list = list(dict.fromkeys(tableName))
 # print(new_list) # [2, 3, 4, 5, 1]
+#-----------------------------------------------------------------------------------------
 
 
 
+def handlListToJson(listvalue):
+    '''
+    将dict 转化的list 再次 转化为dict
+    :param listvalue:
+    :return: [{},....]
+    '''
 
-def getClassDetailsData(val):
-    # tmpDictValueNotList = {}
-    # tmpDictValueInList = {}
-    commDataDict = {}
+    totalDictInsertList = []
     totalList = []
+    tmpCommDict = {}
+    maxNum = 0
 
-
-    tmpDictValueNotList = {}
-    tmpDictValueInList = {}
-    tmpStrToJson = {}
-    print("---------------------------->1", val)
-    noListData = [v for x in val  for k,v in x.items() if not isinstance(x["Value"],list) and not isinstance(x["Value"],dict) ]
-    num = [x for x in range(len(noListData)) if x % 2 == 0]
-    for i in num:
-        tmpDictValueNotList[noListData[i]] = noListData[i + 1]
-    print("---------------------------->2", tmpDictValueNotList)
-    if "Action" in tmpDictValueNotList.keys() and len(tmpDictValueNotList["Action"]) != 0 :
-        tmpStrToJson = strToJsonHandleFunc(tmpDictValueNotList["Action"])
-        del tmpDictValueNotList["Action"]
-    tmpDictValueNotList = dict(tmpStrToJson,**tmpDictValueNotList)
-    # listData = [v for x in val  if  isinstance(x["Value"],list) and not isinstance(x["Value"][0],list) for k,v in x.items()]
-    listDataInDict = [{x["Name"].lower():v} for x in val if isinstance(x["Value"], list) and len(x["Value"]) > 0 for k, v in
-                 x.items() if isinstance(v[0], dict)]
-    # print("listData------------>1",listDataInDict)
-    if len(listDataInDict) == 0:
-        totalList.append(dict(tmpDictValueNotList, **commDataDict))
+    if isinstance(listvalue,list):
+        num = [x for x in range(len(listvalue)) if x % 2 == 0]
+        for i in num:
+            totalDictInsertList.append({listvalue[i]: listvalue[i + 1]})
     else:
-        for valdict in listDataInDict:
-            for key,val in valdict.items():
-                tmpDict = {}
-                tmpList = []
-                tmpList = [v for x in val for k,v in x.items()]
-                num2 = [x for x in range(len(tmpList)) if x % 2 == 0]
-
-                for i2 in num2:
-                    tmpDict["{key1}_{key2}".format(key1 = key,key2 = tmpList[i2])] = tmpList[i2 + 1]
-                # print("-------->2",dict(tmpDict,**tmpDictValueNotList))
-                totalList.append(dict(dict(tmpDict,**tmpDictValueNotList),**commDataDict))
-
-    listDataInList = [{x["Name"]:v} for x in val if isinstance(x["Value"], list) and len(x["Value"]) > 0 for k, v in
-                x.items() if isinstance(v[0], list)]
-
-    if len(listDataInList) == 0:
         pass
+
+    keyList = [k for val in totalDictInsertList for k in val]
+    notDuplicationKeyList = list(dict.fromkeys(keyList))
+    #
+    # print(keyList)
+    # print(totalDictInsertList)
+    # print(notDuplicationKeyList)
+
+    tmpCommKeyDict = {} #没有重复key的
+    tmpMulKeyDict = {} #有重复key的
+    # 在list里没有重复的key值 ; ## 找到在key 在keyList 列表里得index下标
+    for val in notDuplicationKeyList:
+        tmpList = [index for index in range(len(keyList)) if keyList[index] == val]
+
+        if len(tmpList) == 1:
+            tmpCommKeyDict.update(**totalDictInsertList[tmpList[0]])
+        else:
+            tmpMulKeyDict.update({val: tmpList})
+    # print(tmpCommKeyDict)
+    # print(tmpMulKeyDict)
+
+    if len(tmpCommKeyDict) != 0:
+        # keyIndex = [x for x in range(len(tmpCommKeyDict)) if x%2 == 0]
+        # for num in keyIndex:
+        #     tmpCommDict.update({tmpCommKeyDict[num]:tmpCommKeyDict[num + 1]})
+        # print(tmpCommDict)
+        totalList.append(tmpCommKeyDict)
+
+    if len(tmpMulKeyDict) == 1:
+        for k, v in tmpMulKeyDict.items():
+            tmpCommKeyDict.update(**totalDictInsertList[v[0]])
+            totalList.append(tmpCommKeyDict)
     else:
-       tmpData = [{key.lower():val1} for valdict in listDataInList for key,val in valdict.items() for val1 in val]
-       for val in tmpData:
-           for key, val01 in val.items():
-            # if key != "NewGroupNum_List":
-               tmpDict = {}
-               tmpList = []
-               tmpList = [v for x in val01 for k, v in x.items()]
-               num2 = [x for x in range(len(tmpList)) if x % 2 == 0]
 
-               for i2 in num2:
-                   tmpDict["{key1}_{key2}".format(key1=key, key2=tmpList[i2])] = tmpList[i2 + 1]
-               # print('----------》》》》》》',tmpDict)
-               # print("-------->", dict(tmpDict, **tmpDictValueNotList))
-               totalList.append(dict(dict(tmpDict, **tmpDictValueNotList), **commDataDict))
-    # print("------------------------------------------------------")
+        for key, val in tmpMulKeyDict.items():
+            num = len(val)
+            if num > maxNum:
+                maxNum = num
 
-    print(totalList)
+        for i in range(maxNum):
+            tmpDict = {}
+            for key, val in tmpMulKeyDict.items():
+                tmpDict.update(tmpCommKeyDict, **totalDictInsertList[val[i]])
+
+            totalList.append(tmpDict)
+
+    return totalList
 
 
-# xxx = [{'Name': 'TotalPage', 'Value': 55}, {'Name': 'ActionTime', 'Value': 1598266910}, {'Name': 'Area', 'Value': [{'Name': 'Y', 'Value': 155}, {'Name': 'X', 'Value': 40}, {'Name': 'Height', 'Value': 360}, {'Name': 'Width', 'Value': 640}]}, {'Name': 'AID', 'Value': 1237}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'Type', 'Value': 1}, {'Name': 'FileUrl', 'Value': '/upload/trans/ppt01/75/b5/39318/html5/index.html'}, {'Name': 'SourceUID', 'Value': 1001921}, {'Name': 'OSize', 'Value': [{'Name': 'Width', 'Value': 640}, {'Name': 'Height', 'Value': 360}]}, {'Name': 'Stamp', 'Value': 0}, {'Name': 'StatusMsg', 'Value': '{"mouseEvent":{"eventType":"","targetId":"","eventData":{}},"isPlay":true,"progress":[1,0,0]}'}, {'Name': 'Cmd', 'Value': 67502160}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Uid', 'Value': 1001921}, {'Name': 'BoundUID', 'Value': 0}, {'Name': 'Color', 'Value': 'shareWidget37444-1001921'}, {'Name': 'FileName', 'Value': '17-18版：2.1城市内部空间结构（步步高）.pptx'}, {'Name': 'ZIndex', 'Value': 1}, {'Name': 'FileId', 'Value': '37444-1001921'}]
+from kafkaserver.commServer import nestedMongKafkaJsonToList
+from kafkaserver.handleSummary import getinoutEndData
 
-
-import json
-llll = '{"at":"改个","a":"op","d":"editor","v":56,"src":"e386636486ab273d943ca05c03bcb455","seq":57,"op":[{"p":["code",75],"sd":"🐕"}]}'
-
-# #data is json type,不是key为Name 、Value的json
-# def strToJsonHandleFunc(data):
-#     data = json.loads(data)
-#     tmpDict = {}
-#     print(data)
-#     valuseIsListData = [v for k, v in data.items() if  isinstance(v, list) ]
-#     print(valuseIsListData)
-#
-#
-#
-# print(strToJsonHandleFunc(llll))
-
-
-
-
-
-# xxx = {'TotalPage': 55, 'ActionTime': 1598266910, 'AID': 1237, 'TargetUID': 0, 'Type': 1, 'FileUrl': '/upload/trans/ppt01/75/b5/39318/html5/index.html', 'SourceUID': 1001921, 'Stamp': 0, 'StatusMsg': '{"mouseEvent":{"eventType":"","targetId":"","eventData":{}},"isPlay":true,"progress":[1,0,0]}', 'Cmd': 67502160, 'GroupID': 0, 'Uid': 1001921, 'BoundUID': 0, 'Color': 'shareWidget37444-1001921', 'FileName': '17-18版：2.1城市内部空间结构（步步高）.pptx', 'ZIndex': 1, 'FileId': '37444-1001921'}
-
-# xxx = '{"at":"改个","a":"op","d":"editor","v":56,"src":"e386636486ab273d943ca05c03bcb455","seq":57,"op":[{"p":["code",75],"sd":"🐕"}]}'
-# xxx = '{"mouseEvent":{"eventType":"","targetId":"","eventData":{}},"isPlay":true,"progress":[1,0,0]}'
-# xxx = '{"at":"改个","a":"op","d":"editor","v":71,"src":"e386636486ab273d943ca05c03bcb455","seq":72,"op":[{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}]}'
-# xxx = '{"p":["code",0],"sd":"🏘️🏘️🏬🎡🎠🚀🚀🏨🏨🗺️🚧🚝🚋🚧🏤🏦🏛️🏛️😏😏😔"}'
-# print(handleStringJson(xxx))
-def nestedMongKafkaJsonToList(nested):
-    '''
-    递归或获取 key 是Name、Value的值
-    :param nested:
-    :return:
-    '''
-    if isinstance(nested["Value"],list) :
-         # print("---------->11",nested["Value"])
-         if  len(nested["Value"]) != 0:
-            for val in nested["Value"]:
-                # print("---",val)
-                if isinstance(val,list):
-                    for i in val:
-                        # print(i)
-                        if isinstance(i["Value"],list):
-                            if len(i["Value"]) != 0:
-                                yield from nestedMongKafkaJsonToList(i)
-                        else:
-                            yield from nestedMongKafkaJsonToList(i)
-                elif isinstance(val,abc.Mapping):
-                    yield from nestedMongKafkaJsonToList(val)
-    else:
-        for key, value in nested.items():
-            if isinstance(value, list) and isinstance(value[0],abc.Mapping):
-                for val in value:
-                    yield from nestedMongKafkaJsonToList(val)
-
-            elif isinstance(value, list) and isinstance(value[0], list) :
-                for i in value[0]:
-                    if isinstance(i["Value"],list) and  len(i["Value"]) ==0:
-                        pass
-                    else:
-
-                        for va in  nestedMongKafkaJsonToList(i):
-                            print("-----------------------------error-------")
-            else:
-                yield value
-
-def handleDetailsKeyData(string,operationType = "insert"):
+def handleSummaryKeyData(string,operationType = "insert"):
     '''
     用于处理 key是Data中的值
     :param string:
     :return: 返回值 [{},{},{}]
     '''
-    delKey = ["NewGroupNum_List","Json","chatmes"]
-    KeyMergeValue = ["DelGroupNum_List","affectedusers"]
-    KeyResetName = ["Area","PolicyNum_List"]
-    maxNum = 0
     totalList = []
-    tmpTotalList = []
-    tmpOtherList = []
+    keyNameList = ["Persons","MuteAll","Camera","inoutEnd"]
     totalDictInsertList = []
 
     #递归 获取dict的value
     if operationType == "insert":
-        data = string
-    elif operationType == "update":
         data = string["Value"]
+    elif operationType == "update":
+        pass
 
+    #递归处理 json的循环嵌套
     try:
-        for i in data:
-            print("----------xxxxx--------", i)
-            if i["Name"] not in delKey:
-                count = 1
-                for val in nestedMongKafkaJsonToList(i):
+        # print("---------xxxx----------",string)
+        if string["Name"] in keyNameList:
+            totalDictInsertList = getinoutEndData(string)
 
-                    if i["Name"] in KeyMergeValue: # 把 [groupid:1,groupid:2,groupid:3] 枚举类型的合并
-                        if count%2 != 0:
-                            val = i["Name"] + "_" + val
-                            # print(val)
-                        tmpOtherList.append(val)
-                        count +=1
-                    elif i["Name"] in KeyResetName:
-                        if count % 2 != 0:
-                            val = i["Name"] + "_" + val
-                            # print(val)
+        else:
+            # print("-------->2", data)
+            for i in data:
+                tmpTotalList = []
+                if i["Name"] in keyNameList:
+                    for value in i["Value"]:
+                        count = 1
+                        tmpOtherList = []
+                        for val in nestedMongKafkaJsonToList(value):
+                            if count%2 != 0:
+                                val = i["Name"] + "_" + val
+                            tmpOtherList.append(val)
+                            count += 1
+                        tmpList = handlListToJson(tmpOtherList)
+                        # print("--",value["Name"],handlListToJson(tmpOtherList))
+                        totalDictInsertList.append({value["Name"]: tmpList})
+                else:
+                    for val in nestedMongKafkaJsonToList(i):
                         tmpTotalList.append(val)
-                        count += 1
-                    else:
-                        tmpTotalList.append(val)
+                    # print(tmpTotalList)
+                tmpList  = handlListToJson(tmpTotalList)
+                if len(tmpList) != 0 :
+                    totalDictInsertList.append({i["Name"]:tmpList})
     except Exception as e:
-        print(e)
-    print(tmpTotalList)
+        print(e,"---",data)
+
+    tmpListValueSingle = []
+    tmpListValueMult = []
+    for value in totalDictInsertList:
+        for key,val in value.items():
+            if key.isdigit():
+                uid = int(key)
+                for v in val:
+                    tmpListValueMult.append(dict(v,**dict({"UID":uid})))
+            elif len(val) == 1:
+                tmpListValueSingle.append(val[0])
+            elif len(val) > 1:
+                tmpListValueMult += val
+
+    # print("____________________",tmpListValueSingle)
+    # print("____________________",tmpListValueMult)
+    # print("____________________", tmpListValueSingle)
+    tmpDict = {}
+    if len(tmpListValueSingle) != 0 :
+
+        for val in tmpListValueSingle:
+            tmpDict = dict(tmpDict,**val)
+        # print("____________________", tmpDict)
+        for i in range(len(tmpListValueMult)) :
+            tmpListValueMult[i] = dict(tmpListValueMult[i] ,**tmpDict)
+    totalList = tmpListValueMult
+    # print(string["Name"],totalList)
+    from kafkaserver.commServer import handleJsonTosql
+    handleJsonTosql(totalList,"classsummary",string["Name"])
+    print("--------------------------------------------")
+
+
+
+
 str002 = {'ts': 6908989279741935815, 'v': 2, 'op': 'i', 'ns': 'hamster.ClassSummary5', 'o': [{'Name': '_id', 'Value': '5fe1a925f3c5233407490799'}, {'Name': 'ActionTime', 'Value': 1608624421}, {'Name': 'CID', 'Value': 260605243}, {'Name': 'CourseID', 'Value': 121402475}, {'Name': 'Cmd', 'Value': 'End'}, {'Name': 'CloseTime', 'Value': 1608624331}, {'Name': 'StartTime', 'Value': 1608621600}, {'Name': 'SID', 'Value': 1153410}, {'Name': 'Data', 'Value': [{'Name': 'stageEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'UpTotal', 'Value': 1800}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 2}, {'Name': 'DownTotal', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'UpTotal', 'Value': 1575}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 1}, {'Name': 'DownTotal', 'Value': 0}]}]}, {'Name': 'handsupEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'CTime', 'Value': 3}, {'Name': 'Total', 'Value': 1}]}]}, {'Name': 'sharewidgetEnd', 'Value': [{'Name': 'Files', 'Value': [[{'Name': 'EndTime', 'Value': 1608621835}, {'Name': 'FileId', 'Value': '192619485-1153410'}, {'Name': 'Type', 'Value': 2}, {'Name': 'StartTime', 'Value': 1608621696}, {'Name': 'FileName', 'Value': '589d8a8e441511eb8d8e00163e2eb842.mp4'}], [{'Name': 'EndTime', 'Value': 1608624300}, {'Name': 'FileId', 'Value': '192619495-1153410'}, {'Name': 'Type', 'Value': 1}, {'Name': 'StartTime', 'Value': 1608621629}, {'Name': 'FileName', 'Value': '6015819a441511eb97ae00163e2eb842.pptx'}]]}, {'Name': 'Count', 'Value': 2}, {'Name': 'Total', 'Value': 2810}]}, {'Name': 'awardEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 15}]}]}, {'Name': 'silenceEnd', 'Value': [{'Name': 'SilenceAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}, {'Name': 'authorizeEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'Count', 'Value': 1}, {'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'inoutEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621341}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608621463}], [{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621493}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623171}]]}, {'Name': 'Identity', 'Value': 1}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621600}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623175}]]}, {'Name': 'Identity', 'Value': 3}]}]}, {'Name': 'kickoutEnd', 'Value': [{'Name': '28956248', 'Value': [[{'Name': 'Duration', 'Value': 0}, {'Name': 'Time', 'Value': 1608623171}]]}]}, {'Name': 'muteEnd', 'Value': [{'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'MuteAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}]}, {'Name': 'equipmentsEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1800}]}]}, {'Name': '1909074', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}]}], 'o2': '', 'lsid': {'id': {'Kind': 4, 'Data': 'awCI8tHdTbW4tWMWdWXhiA=='}, 'uid': '47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='}, 'txnNumber': 27693}
 str002 = [{'Name': 'stageEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'UpTotal', 'Value': 1800}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 2}, {'Name': 'DownTotal', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'UpTotal', 'Value': 1575}, {'Name': 'DownCount', 'Value': 0}, {'Name': 'UpCount', 'Value': 1}, {'Name': 'DownTotal', 'Value': 0}]}]}, {'Name': 'handsupEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'CTime', 'Value': 3}, {'Name': 'Total', 'Value': 1}]}]}, {'Name': 'sharewidgetEnd', 'Value': [{'Name': 'Files', 'Value': [[{'Name': 'EndTime', 'Value': 1608621835}, {'Name': 'FileId', 'Value': '192619485-1153410'}, {'Name': 'Type', 'Value': 2}, {'Name': 'StartTime', 'Value': 1608621696}, {'Name': 'FileName', 'Value': '589d8a8e441511eb8d8e00163e2eb842.mp4'}], [{'Name': 'EndTime', 'Value': 1608624300}, {'Name': 'FileId', 'Value': '192619495-1153410'}, {'Name': 'Type', 'Value': 1}, {'Name': 'StartTime', 'Value': 1608621629}, {'Name': 'FileName', 'Value': '6015819a441511eb97ae00163e2eb842.pptx'}]]}, {'Name': 'Count', 'Value': 2}, {'Name': 'Total', 'Value': 2810}]}, {'Name': 'awardEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 15}]}]}, {'Name': 'silenceEnd', 'Value': [{'Name': 'SilenceAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}, {'Name': 'authorizeEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}, {'Name': '1909074', 'Value': [{'Name': 'Count', 'Value': 1}, {'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'inoutEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621341}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608621463}], [{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621493}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623171}]]}, {'Name': 'Identity', 'Value': 1}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621600}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623175}]]}, {'Name': 'Identity', 'Value': 3}]}]}, {'Name': 'kickoutEnd', 'Value': [{'Name': '28956248', 'Value': [[{'Name': 'Duration', 'Value': 0}, {'Name': 'Time', 'Value': 1608623171}]]}]}, {'Name': 'muteEnd', 'Value': [{'Name': 'Persons', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}, {'Name': 'MuteAll', 'Value': [{'Name': 'Count', 'Value': 0}, {'Name': 'Total', 'Value': 0}]}]}, {'Name': 'equipmentsEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1800}]}]}, {'Name': '1909074', 'Value': [{'Name': 'Camera', 'Value': [{'Name': 'Total', 'Value': 1575}]}]}]}]
-# handleDetailsKeyData()
+# str002 = [  {'Name': 'inoutEnd', 'Value': [{'Name': '28956248', 'Value': [{'Name': 'Total', 'Value': 1800}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621341}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608621463}], [{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621493}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623171}]]}, {'Name': 'Identity', 'Value': 1}]}, {'Name': '1909074', 'Value': [{'Name': 'Total', 'Value': 1575}, {'Name': 'Details', 'Value': [[{'Name': 'Device', 'Value': 0}, {'Name': 'Type', 'Value': 'In'}, {'Name': 'Time', 'Value': 1608621600}], [{'Name': 'Type', 'Value': 'Out'}, {'Name': 'Time', 'Value': 1608623175}]]}, {'Name': 'Identity', 'Value': 3}]}]}]
+
+
 for val in str002:
-
-    handleDetailsKeyData(val,"update")
-
+    # print("----------------------------------------++++++++++++++++++++-------------------------",val)
+    handleSummaryKeyData(val,"insert")

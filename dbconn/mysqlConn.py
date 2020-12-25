@@ -40,6 +40,7 @@ def execCmd(query,data = ""):
         writeLogContext(query,"info")
     conn.close()
 #多线程执行.(出现重复插入的情况，待解决)
+
 def concurExecSql(strList):
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         # Start the load operations and mark each future with its URL

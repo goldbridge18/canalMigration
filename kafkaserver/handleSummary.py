@@ -436,4 +436,4 @@ str002 = {'ts': 6908989279741935815, 'v': 2, 'op': 'i', 'ns': 'hamster.ClassSumm
 #     print(totalList)
 # run(str002)
 # getClassDetailsUpdateOperation(str002)
-getClassSummaryNum(str002)
+# getClassSummaryNum(str002)

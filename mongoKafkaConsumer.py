@@ -37,7 +37,7 @@ for message in consumer:
         elif data["op"] == "u":
             pass
             # print("--------update----------", data)
-            # getClassDetailsUpdateOperation(data)
+            getClassDetailsUpdateOperation(data)
         elif data["op"] == "d":
             pass
             # print("--------delete----------", data)

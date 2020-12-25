@@ -55,6 +55,45 @@ def handleStringJson(string):
 
     return  totalDict
 
+##
+def nestedMongKafkaJsonToList(nested):
+    '''
+    递归或获取 key 是Name、Value的值
+    :param nested:
+    :return:
+    '''
+    if isinstance(nested["Value"],list) :
+         # print("---------->11",nested["Value"])
+         if  len(nested["Value"]) != 0:
+            for val in nested["Value"]:
+                # print("---",val)
+                if isinstance(val,list):
+                    for i in val:
+                        # print(i)
+                        if isinstance(i["Value"],list):
+                            if len(i["Value"]) != 0:
+                                yield from nestedMongKafkaJsonToList(i)
+                        else:
+                            yield from nestedMongKafkaJsonToList(i)
+                elif isinstance(val,abc.Mapping):
+                    yield from nestedMongKafkaJsonToList(val)
+    else:
+        for key, value in nested.items():
+            if isinstance(value, list) and isinstance(value[0],abc.Mapping):
+                for val in value:
+                    yield from nestedMongKafkaJsonToList(val)
+
+            elif isinstance(value, list) and isinstance(value[0], list) :
+                for i in value[0]:
+                    if isinstance(i["Value"],list) and  len(i["Value"]) ==0:
+                        pass
+                    else:
+
+                        for va in  nestedMongKafkaJsonToList(i):
+                            print("-----------------------------error-------")
+            else:
+                yield value
+
 
 def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context = ""):
     '''
@@ -84,9 +123,9 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
         valuesList = []
 
         # print("----------------------->",val)
-        if tableNameKey == "classsummary":
-            tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
-            val = dict(zip(tmpKeyList,list(val.values())))
+        # if tableNameKey == "classsummary":
+        #     tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
+        #     val = dict(zip(tmpKeyList,list(val.values())))
 
         addDict = dict(val,**commDataDict)
         fieldsList.append(tuple([k for k, v in addDict.items()]))
@@ -97,7 +136,7 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
             # print("------",str(tuple(fieldsList[0])))
             fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
             # print("------------",valuesList[0])
-            valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")")
+            valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")").replace("()","\"\"")
 
             # print( tableName,"------fieldsList----------1", fieldsStr)
             # print( tableName,"---------valuesList-------1", valuesStr)
