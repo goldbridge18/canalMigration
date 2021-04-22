@@ -94,8 +94,6 @@ def handleDetailsKeyData(string,operationType = "insert"):
                 maxNum = num
         for i in range(maxNum):
             tmpDict = {}
-            print(totalDictInsertList)
-            print(tmpMulKeyDict)
             for key,val in tmpMulKeyDict.items():
                 try:
                     tmpDict.update(tmpCommKeyDict,**totalDictInsertList[val[i]])
@@ -152,7 +150,6 @@ def getClassDetailsUpdateOperation(string,operation = "update"):
     else:
         for val in updateData:
             tmpDict.update({"updateRowNum":val["Name"]})
-            print(val)
             if not isinstance(val["Value"], list):
                 commDataDict.update({val["Name"]: val["Value"]})
             else:
@@ -161,7 +158,7 @@ def getClassDetailsUpdateOperation(string,operation = "update"):
                     totalList.append(dict(dict(tmpDict,**i),**commDataDict))
             totalList += handleDetailsKeyData(val,operation)
         print("------------------------------------------------------")
-        print(totalList)
+        # print(totalList)
         handleJsonTosql(totalList,tableName,date)
         print("------------------------------------------------------")
 

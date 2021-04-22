@@ -133,9 +133,9 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
         # totalFieldsList += fieldsList[0]
         # totalFieldsList.append(tableName)
         if len(fieldsList) != 0:
-            print("------",str(tuple(fieldsList[0])))
+            #print("------",str(tuple(fieldsList[0])))
             fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
-            print("------------",valuesList[0])
+            #print("------------",valuesList[0])
             valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")").\
                 replace("()","\"\"").replace("({","\"").replace("})","\"")
 
@@ -145,7 +145,7 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
             from dbconn.mysqlConn import execCmd
             query = "insert into " + tableName + fieldsStr +" value" + valuesStr + ";"
             # totalFieldsList.append(query)
-            print(query)
+            #print(query)
             execCmd(query,context)
 
         else:
