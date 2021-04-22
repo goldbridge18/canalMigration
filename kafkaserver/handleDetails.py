@@ -171,4 +171,4 @@ str002={"ts":6951716447626199343,"v":2,"op":"u","ns":"hamster.ClassDetails_2021_
 # from test import xxx
 # getClassDetailsData(xxx)
 # getClassDetailsData(str002)
-getClassDetailsUpdateOperation(str002)
+# getClassDetailsUpdateOperation(str002)
