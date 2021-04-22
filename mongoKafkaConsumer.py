@@ -18,7 +18,7 @@ consumer = KafkaConsumer( group_id=groupId, bootstrap_servers= bootstrapServers.
 consumer.assign([TopicPartition(topic= topic, partition= 0)])
 print("-----------welcome use kafka ---------------")
 for message in consumer:
-    print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))
+    #print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))
     data = eval(str(message.value, encoding="utf8"))
 
     try:

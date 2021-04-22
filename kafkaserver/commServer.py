@@ -133,10 +133,11 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
         # totalFieldsList += fieldsList[0]
         # totalFieldsList.append(tableName)
         if len(fieldsList) != 0:
-            # print("------",str(tuple(fieldsList[0])))
+            print("------",str(tuple(fieldsList[0])))
             fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
-            # print("------------",valuesList[0])
-            valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")").replace("()","\"\"")
+            print("------------",valuesList[0])
+            valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")").\
+                replace("()","\"\"").replace("({","\"").replace("})","\"")
 
             # print( tableName,"------fieldsList----------1", fieldsStr)
             # print( tableName,"---------valuesList-------1", valuesStr)
