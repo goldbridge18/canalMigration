@@ -117,40 +117,42 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
                 totalList += [dict(x,**addTmpDict) for x in val ]
             else:
                 totalList = string
-    # print("sql---------->:",totalList)
+    #print("sql---------->:",totalList)
     for val in totalList:
         fieldsList = []
         valuesList = []
-
-        # print("----------------------->",val)
-        # if tableNameKey == "classsummary":
-        #     tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
-        #     val = dict(zip(tmpKeyList,list(val.values())))
-
-        addDict = dict(val,**commDataDict)
-        fieldsList.append(tuple([k for k, v in addDict.items()]))
-        valuesList.append(tuple([v for k, v in addDict.items()]))
-        # totalFieldsList += fieldsList[0]
-        # totalFieldsList.append(tableName)
-        if len(fieldsList) != 0:
-            #print("------",str(tuple(fieldsList[0])))
-            fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
-            #print("------------",valuesList[0])
-            valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")").\
-                replace("()","\"\"").replace("({","\"").replace("})","\"")
-
-            # print( tableName,"------fieldsList----------1", fieldsStr)
-            # print( tableName,"---------valuesList-------1", valuesStr)
-
-            from dbconn.mysqlConn import execCmd
-            query = "insert into " + tableName + fieldsStr +" value" + valuesStr + ";"
-            # totalFieldsList.append(query)
-            #print(query)
-            execCmd(query,context)
-
+        if len(val) == 0:
+            pass
         else:
-            print(tableName,"------fieldsList----------2", fieldsList)
-            print(tableName,"---------valuesList-------2", valuesList)
-            # pass
-    # print("------>",totalFieldsList)
-    # return  totalFieldsList
+            #print("----------------------->",val)
+            # if tableNameKey == "classsummary":
+            #     tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
+            #     val = dict(zip(tmpKeyList,list(val.values())))
+
+            addDict = dict(val,**commDataDict)
+            fieldsList.append(tuple([k for k, v in addDict.items()]))
+            valuesList.append(tuple([v for k, v in addDict.items()]))
+            # totalFieldsList += fieldsList[0]
+            # totalFieldsList.append(tableName)
+            if len(fieldsList) != 0:
+                #print("------",str(tuple(fieldsList[0])))
+                fieldsStr = str(tuple(fieldsList[0])).replace(" ",'').replace("\\n\'","").replace("\\n","").replace("\"","\'").replace("\'", "`").replace("_id","id").replace(",)",")").lower()
+                #print("------------",valuesList[0])
+                valuesStr = str(valuesList[0]).replace("[", "(").replace("]", ")").replace("None", "").replace("\"[","(").replace("]\"", ")").\
+                    replace("()","\"\"").replace("({","\"").replace("})","\"")
+
+                #print( tableName,"------fieldsList----------1", fieldsStr)
+                #print( tableName,"---------valuesList-------1", valuesStr)
+
+                from dbconn.mysqlConn import execCmd
+                query = "insert into " + tableName + fieldsStr +" value" + valuesStr + ";"
+                # totalFieldsList.append(query)
+                #print(query)
+                execCmd(query,context)
+
+            else:
+                print(tableName,"------fieldsList----------2", fieldsList)
+                print(tableName,"---------valuesList-------2", valuesList)
+                # pass
+        # print("------>",totalFieldsList)
+        # return  totalFieldsList

@@ -19,7 +19,7 @@ consumer.assign([TopicPartition(topic= topic, partition= 0)])
 print("-----------welcome use kafka ---------------")
 for message in consumer:
     #print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))
-    data = eval(str(message.value, encoding="utf8"))
+    data = eval(str(message.value, encoding="utf8").replace('\\',))
 
     try:
         tableName = re.search('ClassDetails_|ClassSummary',data["ns"]).group()
