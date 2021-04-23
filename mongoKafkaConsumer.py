@@ -12,7 +12,7 @@ global null ,false ,true
 null = ""
 false = 0
 true = 1
-
+count = 0
 # consumer = KafkaConsumer( group_id='mongo-group1', bootstrap_servers=['10.0.0.64:9092'])
 consumer = KafkaConsumer( group_id=groupId, bootstrap_servers= bootstrapServers.split(","))
 consumer.assign([TopicPartition(topic= topic, partition= 0)])
@@ -25,7 +25,8 @@ for message in consumer:
         tableName = re.search('ClassDetails_|ClassSummary',data["ns"]).group()
     except AttributeError as e:
         tableName = ''
-
+    count += 1
+    print(count)
     if tableName == "ClassDetails_":
         # print("--------------------------------------------",tableName)
         # print(data)

@@ -124,7 +124,7 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
         if len(val) == 0:
             pass
         else:
-            #print("----------------------->",val)
+            print("----------------------->",val)
             # if tableNameKey == "classsummary":
             #     tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
             #     val = dict(zip(tmpKeyList,list(val.values())))

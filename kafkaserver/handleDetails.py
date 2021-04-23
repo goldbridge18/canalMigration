@@ -154,13 +154,14 @@ def getClassDetailsUpdateOperation(string,operation = "update"):
             if not isinstance(val["Value"], list):
                 commDataDict.update({val["Name"]: val["Value"]})
             else:
-                for i in handleDetailsKeyData(val,operation):
-                    totalList.append(dict(dict(tmpDict,**i),**commDataDict))
-            totalList += handleDetailsKeyData(val,operation)
-        #print("------------------------------------------------------")
-        handleJsonTosql(totalList,tableName,date)
-        #print("------------------------------------------------------")
 
+                for i in handleDetailsKeyData(val,operation):
+                    tmpDict = dict(tmpDict,**commDataDict)
+                    # totalList.append(dict(dict(tmpDict,**i),**commDataDict))
+                    totalList.append(dict(tmpDict,**i))
+        print("------------------------------------------------------")
+        handleJsonTosql(totalList,tableName,date)
+        print("------------------------------------------------------")
 
 # from test import xxx
 # getClassDetailsData(xxx)
