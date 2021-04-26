@@ -42,6 +42,7 @@ def execCmd(query,data = ""):
 #多线程执行.(出现重复插入的情况，待解决)
 
 def concurExecSql(strList):
+    print("------->",strList)
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         # Start the load operations and mark each future with its URL
         future_to_sql = {executor.submit(execCmd, sql): sql for sql in strList}
@@ -51,13 +52,13 @@ def concurExecSql(strList):
                 data = future.result()
             except Exception as exc:
                 print('%r generated an exception: %s' % (sql, exc))
-            else:
-                for i in strList:
-                    execCmd(i)
-                    with open("./sql/insert_sql.sql", "a+", encoding="utf8") as f:
-                        f.write("\n")
-                        f.write(i)
-                    # print("insert1 :", i)
-                print('%r  is succeed !' % (sql))
+            # else:
+            #     for i in strList:
+            #         # execCmd(i)
+            #         # with open("./sql/insert_sql.sql", "a+", encoding="utf8") as f:
+            #         #     f.write("\n")
+            #         #     f.write(i)
+            #         print("insert1 :", i)
+            #     print('%r  is succeed !' % (sql))
 
 

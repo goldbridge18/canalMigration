@@ -1,7 +1,7 @@
 import json
 
 from collections import  abc
-
+from dbconn.mysqlConn import execCmd,concurExecSql
 
 def getDictMaxLayer(dictData):
     '''
@@ -105,7 +105,7 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
     #data 的key的值处理
     addTmpDict = {}
     totalList = []
-
+    sqlList = []
     totalFieldsList = []
     tableName = "eeo_{table}_".format(table=tableNameKey) + keyName.lower()
     for valdict in string :
@@ -121,10 +121,11 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
     for val in totalList:
         fieldsList = []
         valuesList = []
+
         if len(val) == 0:
             pass
         else:
-            print("----------------------->",val)
+            # print("----------------------->",val)
             # if tableNameKey == "classsummary":
             #     tmpKeyList = [keyName.lower() +  '_' + x for x in  list(val.keys())]
             #     val = dict(zip(tmpKeyList,list(val.values())))
@@ -144,15 +145,18 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
                 #print( tableName,"------fieldsList----------1", fieldsStr)
                 #print( tableName,"---------valuesList-------1", valuesStr)
 
-                from dbconn.mysqlConn import execCmd
+
                 query = "insert into " + tableName + fieldsStr +" value" + valuesStr + ";"
                 # totalFieldsList.append(query)
-                #print(query)
-                execCmd(query,context)
+                # print(query)
+                #execCmd(query,context)
+                sqlList.append(query)
+
 
             else:
                 print(tableName,"------fieldsList----------2", fieldsList)
                 print(tableName,"---------valuesList-------2", valuesList)
                 # pass
-        # print("------>",totalFieldsList)
-        # return  totalFieldsList
+
+    #并行执行sql
+    concurExecSql(sqlList)

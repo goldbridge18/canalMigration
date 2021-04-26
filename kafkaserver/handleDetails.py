@@ -159,11 +159,16 @@ def getClassDetailsUpdateOperation(string,operation = "update"):
                     tmpDict = dict(tmpDict,**commDataDict)
                     # totalList.append(dict(dict(tmpDict,**i),**commDataDict))
                     totalList.append(dict(tmpDict,**i))
-        print("------------------------------------------------------")
+           # totalList += handleDetailsKeyData(val,operation)
+        # print("------------------------------------------------------")
         handleJsonTosql(totalList,tableName,date)
-        print("------------------------------------------------------")
+        # print("------------------------------------------------------")
+
+
+str002={'ts': 6953911953303536136, 'v': 2, 'op': 'u', 'ns': 'hamster.ClassDetails_2021_04_04', 'o': [{'Name': '$v', 'Value': 1}, {'Name': '$set', 'Value': [{'Name': 'CloseTime', 'Value': 1619086200},{'Name': 'Data.538', 'Value': [{'Name': 'ActionTime', 'Value': 1619083795}, {'Name': 'Area', 'Value': [{'Name': 'Y', 'Value': 153}, {'Name': 'X', 'Value': 500}, {'Name': 'Height', 'Value': 530}, {'Name': 'Width', 'Value': 735}]}, {'Name': 'AID', 'Value': 423337}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'Type', 'Value': 4}, {'Name': 'FileUrl', 'Value': '/upload/trans/main01/a7/27/427533281/noop/519b0a29608cf2f08101.pdf'}, {'Name': 'SourceUID', 'Value': 20960848}, {'Name': 'OSize', 'Value': [{'Name': 'Width', 'Value': 600}, {'Name': 'Height', 'Value': 400}]}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Stamp', 'Value': 0}, {'Name': 'Cmd', 'Value': 67502160}, {'Name': 'Page', 'Value': 66}, {'Name': 'Uid', 'Value': 22683728}, {'Name': 'BoundUID', 'Value': 0}, {'Name': 'Color', 'Value': 'shareWidget217413545-2974808'}, {'Name': 'Pos', 'Value': 540}, {'Name': 'FileName', 'Value': '研究问题的提出和RCT研究设计-话题1-0424上午场次（pdf）.pdf'}, {'Name': 'ZIndex', 'Value': 1}, {'Name': 'FileId', 'Value': '217413545-2974808'}]}, {'Name': 'Data.539', 'Value': [{'Name': 'ActionTime', 'Value': 1619083795}, {'Name': 'Area', 'Value': [{'Name': 'Y', 'Value': 153}, {'Name': 'X', 'Value': 500}, {'Name': 'Height', 'Value': 530}, {'Name': 'Width', 'Value': 735}]}, {'Name': 'AID', 'Value': 423341}, {'Name': 'TargetUID', 'Value': 0}, {'Name': 'Type', 'Value': 4}, {'Name': 'FileUrl', 'Value': '/upload/trans/main01/a7/27/427533281/noop/519b0a29608cf2f08101.pdf'}, {'Name': 'SourceUID', 'Value': 20960848}, {'Name': 'OSize', 'Value': [{'Name': 'Width', 'Value': 600}, {'Name': 'Height', 'Value': 400}]}, {'Name': 'GroupID', 'Value': 0}, {'Name': 'Stamp', 'Value': 0}, {'Name': 'Cmd', 'Value': 67502160}, {'Name': 'Page', 'Value': 65}, {'Name': 'Uid', 'Value': 22683728}, {'Name': 'BoundUID', 'Value': 0}, {'Name': 'Color', 'Value': 'shareWidget217413545-2974808'}, {'Name': 'Pos', 'Value': 540}, {'Name': 'FileName', 'Value': '研究问题的提出和RCT研究设计-话题1-0424上午场次（pdf）.pdf'}, {'Name': 'ZIndex', 'Value': 1}, {'Name': 'FileId', 'Value': '217413545-2974808'}]}]}], 'o2': {'_id': '6081363d693470eb13bfe1fd'}, 'lsid': {'id': {'Kind': 4, 'Data': 'Yd6TgXvQQtCMMrKtwAhjzw=='}, 'uid': '47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='}, 'txnNumber': 54177}
+
 
 # from test import xxx
 # getClassDetailsData(xxx)
 # getClassDetailsData(str002)
-# getClassDetailsUpdateOperation(str002)
+getClassDetailsUpdateOperation(str002)
