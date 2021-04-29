@@ -9,4 +9,7 @@ templateFile="/etc/consul-template/templates/haproxy.ctmpl"
 haproxycfg="/etc/haproxy/haproxy.cfg"
 logfile="/var/log/orch_hook.log"
 
+import datetime
+nextDate = datetime.datetime.now().strftime("%Y_%m_%d_%H")
 
+print(nextDate)

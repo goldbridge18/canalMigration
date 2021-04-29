@@ -1,5 +1,5 @@
 import json
-
+import datetime
 from collections import  abc
 from dbconn.mysqlConn import execCmd,concurExecSql
 
@@ -107,7 +107,17 @@ def handleJsonTosql(string,tableNameKey,keyName = "",commDataDict = {},context =
     totalList = []
     sqlList = []
     totalFieldsList = []
+
+    dateByDay = datetime.datetime.now().strftime("%Y_%m_%d_%H")
+    dateByMonth = datetime.datetime.now().strftime("%Y_%m")
+    nextDate = (datetime.datetime.now() + datetime.timedelta(days=6)).strftime("%Y_%m")
+    print()
     tableName = "eeo_{table}_".format(table=tableNameKey) + keyName.lower()
+    #创建新表
+    if dateByDay == "{date}_28_01".format(date=dateByMonth) and "ClassDetails" == tableNameKey:
+        nextTableName = "eeo_{table}_".format(table=tableNameKey) + nextDate
+        execCmd("CREATE TABLE IF NOT EXISTS {tablename} LIKE eeo_ClassDetails_xxxxxx;".format(tablename=nextTableName))
+
     for valdict in string :
         for key,val in valdict.items():
             if key.isdigit():
