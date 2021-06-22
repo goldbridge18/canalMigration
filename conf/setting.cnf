@@ -1,6 +1,6 @@
 [canalInfo]
 
-host=10.0.0.62
+host=10.0.0.2
 port=11111
 client_id=1001
 destination=example
@@ -22,7 +22,7 @@ rowNum = 1
 isSqlBatch = 0
 
 [mysqlInfo]
-ipaddr=10.0.0.62
+ipaddr=10.0.0.2
 userName=test
 password=test123
 databaseName=test
@@ -35,5 +35,5 @@ incrementSync = 1
 
 [kafkaInfo]
 groupId=mongo-group1
-bootstrapServers=10.0.0.64:9092
+bootstrapServers=10.0.0.4:9092
 topic=mongodb-tes
