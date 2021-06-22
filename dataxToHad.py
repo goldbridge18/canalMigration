@@ -94,7 +94,7 @@ if __name__ == "__main__":
 # from datetime import datetime, timedelta
 # import os
 # from impala.dbapi import connect
-# db = connect(host='10.1.61.12', port=10000, database='eo_hadoop', auth_mechanism='PLAIN', user='hive')
+# db = connect(host='10.0.0.12', port=10000, database='eo_hadoop', auth_mechanism='PLAIN', user='hive')
 # tablelist=["ods_eeo_login_user_classroom","ods_eeo_login_user"]
 # cursor=db.cursor()
 # b=datetime.today()-timedelta(days=1)
