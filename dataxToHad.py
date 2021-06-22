@@ -17,9 +17,9 @@ def createJsonFile(pathFile):
                                             "parameter": {"username": "datax", "password": "datax123", "splitPk": "",
                                                           "connection": [{"querySql": ["select * from %s;"%tableName],
                                                                           "jdbcUrl": [
-                                                                              "jdbc:mysql://10.1.42.6:61106/eo_userinfo?serverTimezone=GMT%2B8"]}]}},
+                                                                              "jdbc:mysql://10.0.0.6:3306/eo_userinfo?serverTimezone=GMT%2B8"]}]}},
                                  "writer": {"name": "hdfswriter",
-                                            "parameter": {"defaultFS": "hdfs://eeo-gic1-bj-zi-idc20-dhd112:8020",
+                                            "parameter": {"defaultFS": "hdfs://dhd112:8020",
                                                           "fileType": "text",
                                                           "path": "/user/hive/warehouse/eo_hadoop.db/ods_eeo_cluster_member",
                                                           "fileName": "ods_eeo_cluster_member", "writeMode": "append",
@@ -61,7 +61,7 @@ def createJsonFile(pathFile):
 
 
 def connImpalaEexcCmd(cmd):
-    db = connect(host='10.1.61.12', port=10000, database='eo_hadoop', auth_mechanism='PLAIN', user='hive')
+    db = connect(host='10.0.0.12', port=10000, database='eo_hadoop', auth_mechanism='PLAIN', user='hive')
     cursor = db.cursor()
     cursor.execute(cmd)
 
