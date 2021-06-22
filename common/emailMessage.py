@@ -11,8 +11,8 @@ def formatAddr(s):
     return formataddr((Header(name, 'utf-8').encode(), addr))
 def sendMail(body, attachment):
     smtp_server = 'smtp.exmail.qq.com'
-    from_mail = 'ruijie.qiur@eeoa.com'
-    mail_pass = 'qiuruijie@123'
+    from_mail = 'xxxxxxxxx'
+    mail_pass = '123'
     to_mail = ['ruijie.qiur@eeoa.com']
     # 构造一个MIMEMultipart对象代表邮件本身
     msg = MIMEMultipart()
